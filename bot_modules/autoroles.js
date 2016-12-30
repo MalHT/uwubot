@@ -2,11 +2,11 @@
  * AUTOROLES - Automatically assigns roles to people.
  */
 
-var config = require("../config.json");
+let config = require("../config.json");
 
-var managedRoles = [];
+let managedRoles = [];
 
-var help = "**Autoroles**\n";
+let help = "**Autoroles**\n";
 help += "Automatically assigns roles to people.\n";
 help += "*!listroles* - shows available roles.\n";
 help += "*!giverole <role name>* - gives you a role.\n";
@@ -24,11 +24,11 @@ try {
 
 //** Command handlers
 
-var commandHandlers = {};
+let commandHandlers = {};
 
 commandHandlers.listroles = function (message, arguments) {
   
-  var rolesMessage = "";
+  let rolesMessage = "";
   
   if (managedRoles.length > 0) {
   

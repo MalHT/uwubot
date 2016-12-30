@@ -2,21 +2,21 @@
  * EMOJITEXT - Spits out regional indicators and (maybe) other such obnoxious "emoji" characters as replacement for text
  */
 
-var help = "**Emojitext**\n";
+let help = "**Emojitext**\n";
 help += "Converts given text into emoji characters.\n";
 help += "*!ri <message>* - prints <message> using emoji characters.\n";
 
 
 //** Command handlers
 
-var commandHandlers = {};
+let commandHandlers = {};
 
 commandHandlers.ri = function (message, arguments) {
 
 //    // Remove non alphanumeric characters
-//    var messageContent = message.content.replace(/[\W_\!\?]+/g," ");
+//    let messageContent = message.content.replace(/[\W_\!\?]+/g," ");
     
-  var messageContent = arguments;
+  let messageContent = arguments;
 
   message.channel.sendMessage(indicatorize(messageContent));
   
@@ -24,15 +24,15 @@ commandHandlers.ri = function (message, arguments) {
 
 //** Functions for ri command
 
-var indicatorize = function (text) {
+let indicatorize = function (text) {
   
   text = text.toLowerCase();
   
   text = text.split('').join(' ');
   
-  var normalAlphabet =  'abcdefghijklmnopqrstuvwxyz!?'.split('');
+  let normalAlphabet =  'abcdefghijklmnopqrstuvwxyz!?'.split('');
   
-  var indicatorAlphabet = [
+  let indicatorAlphabet = [
     String.fromCodePoint(0x1f1e6),
     String.fromCodePoint(0x1f1e7),
     String.fromCodePoint(0x1f1e8),

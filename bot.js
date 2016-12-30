@@ -3,17 +3,17 @@ const client = new Discord.Client();
 
 // Modules
 
-var modules = {};
+let modules = {};
 
 modules.emojitext = require('./bot_modules/emojitext.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 
-var help = "**uwubot** version whatever\n";
+let help = "**uwubot** version whatever\n";
 help += "\n";
 
-var commandHandlers = {};
+let commandHandlers = {};
 
-for (var module in modules) {
+for (let module in modules) {
     
   if (modules[module].help) {
         
@@ -31,7 +31,7 @@ for (var module in modules) {
 
 // Config file
 
-var config = require('./config.json');
+let config = require('./config.json');
 
 // Debug message for on ready
 client.on('ready', () => {
@@ -43,16 +43,16 @@ client.on('message', message => {
   
   if (message.content) {
   
-    var command = message.content.match(/^\!\w+/);
+    let command = message.content.match(/^\!\w+/);
 
     if (command) {
       
       //** Process command text and arguments
       
       // commandText is the command without the !
-      var commandText = command[0].substr(1);
+      let commandText = command[0].substr(1);
       
-      var commandArgs = message.content.replace(command[0], '');
+      let commandArgs = message.content.replace(command[0], '');
       
       // Remove leading space from arguments
       if (commandArgs) {
@@ -61,7 +61,7 @@ client.on('message', message => {
       
       //** Pass commands onwards
       
-      for (var commandHandlerName in commandHandlers) {
+      for (let commandHandlerName in commandHandlers) {
         
         if (commandText === commandHandlerName) {
           
