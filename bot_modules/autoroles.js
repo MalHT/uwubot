@@ -26,7 +26,7 @@ try {
 
 let commandHandlers = {};
 
-commandHandlers.listroles = function (message, arguments) {
+commandHandlers.listroles = function (message, args) {
   
   let rolesMessage = "";
   
@@ -56,13 +56,13 @@ commandHandlers.listroles = function (message, arguments) {
   
 };
 
-commandHandlers.giverole = function (message, arguments) {
+commandHandlers.giverole = function (message, args) {
   
   // Check if requested role is in the list of managed roles 
   
-  if (managedRoles.indexOf(arguments) !== -1) {
+  if (managedRoles.indexOf(args) !== -1) {
     
-    let role = message.guild.roles.find("name", arguments);
+    let role = message.guild.roles.find("name", args);
     
     if (!message.member.roles.has(role.id)) {
       
@@ -90,13 +90,13 @@ commandHandlers.giverole = function (message, arguments) {
   
 };
 
-commandHandlers.removerole = function(message, arguments) {
+commandHandlers.removerole = function(message, args) {
   
   // Check if requested role is in the list of managed roles 
   
-  if (managedRoles.indexOf(arguments) !== -1) {
+  if (managedRoles.indexOf(args) !== -1) {
     
-    let role = message.guild.roles.find("name", arguments);
+    let role = message.guild.roles.find("name", args);
     
     if (message.member.roles.has(role.id)) {
       

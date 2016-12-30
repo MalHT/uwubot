@@ -11,12 +11,12 @@ help += "*!ri <message>* - prints <message> using emoji characters.\n";
 
 let commandHandlers = {};
 
-commandHandlers.ri = function (message, arguments) {
+commandHandlers.ri = function (message, args) {
 
 //    // Remove non alphanumeric characters
 //    let messageContent = message.content.replace(/[\W_\!\?]+/g," ");
     
-  let messageContent = arguments;
+  let messageContent = args;
 
   message.channel.sendMessage(indicatorize(messageContent));
   
