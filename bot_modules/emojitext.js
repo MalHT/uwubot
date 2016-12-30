@@ -6,19 +6,23 @@ var help = "**Emojitext**\n";
 help += "Converts given text into emoji characters.\n";
 help += "*!ri <message>* - prints <message> using emoji characters.\n";
 
-module.exports = {
-  "help": help,
-  "regionalIndicators": function(message, arguments) {
 
-//      // Remove non alphanumeric characters
-//      var messageContent = message.content.replace(/[\W_\!\?]+/g," ");
+//** Command handlers
+
+var commandHandlers = {};
+
+commandHandlers.ri = function(message, arguments) {
+
+//    // Remove non alphanumeric characters
+//    var messageContent = message.content.replace(/[\W_\!\?]+/g," ");
     
     var messageContent = arguments;
 
-      message.channel.sendMessage(indicatorize(messageContent));
-  }
+    message.channel.sendMessage(indicatorize(messageContent));
   
-};
+}
+
+//** Functions for ri command
 
 var indicatorize = function(text) {
   
@@ -71,4 +75,11 @@ var indicatorize = function(text) {
 
 function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+};
+
+//** Module Exports
+
+module.exports = {
+  "help": help,
+  "commandHandlers": commandHandlers
 };

@@ -11,19 +11,23 @@ modules.autoroles = require('./bot_modules/autoroles.js');
 var help = "**uwubot** version whatever\n";
 help += "\n";
 
+var commandHandlers = {};
+
 for (var module in modules) {
     
   if (modules[module].help) {
-    
-    console.log(modules[module].help);
-    
+        
     help += modules[module].help;
     
   }
   
+  if (modules[module].commandHandlers) {
+    
+    Object.assign(commandHandlers, modules[module].commandHandlers);
+    
+  }
+  
 };
-
-console.log(help);
 
 // Config file
 
@@ -57,9 +61,13 @@ client.on('message', message => {
       
       //** Pass commands onwards
       
-      if (commandText === "ri") {
+      for (var commandHandlerName in commandHandlers) {
         
-        modules.emojitext.regionalIndicators(message, commandArgs);
+        if (commandText === commandHandlerName) {
+          
+          commandHandlers[commandHandlerName](message, commandArgs);
+          
+        }
         
       }
       
