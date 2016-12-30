@@ -3,8 +3,27 @@ const client = new Discord.Client();
 
 // Modules
 
-var emojitext = require('./bot_modules/emojitext.js');
-var autoroles = require('./bot_modules/autoroles.js');
+var modules = {};
+
+modules.emojitext = require('./bot_modules/emojitext.js');
+modules.autoroles = require('./bot_modules/autoroles.js');
+
+var help = "**uwubot** version whatever\n";
+help += "\n";
+
+for (var module in modules) {
+    
+  if (modules[module].help) {
+    
+    console.log(modules[module].help);
+    
+    help += modules[module].help;
+    
+  }
+  
+};
+
+console.log(help);
 
 // Config file
 
@@ -18,13 +37,41 @@ client.on('ready', () => {
 // On message, process commands
 client.on('message', message => {
   
-  if (message.content.startsWith('!ri ')) {
+  if (message.content) {
+  
+    var command = message.content.match(/^\!\w+/);
 
-    message.content = message.content.substring(4);
+    if (command) {
+      
+      //** Process command text and arguments
+      
+      // commandText is the command without the !
+      var commandText = command[0].substr(1);
+      
+      var commandArgs = message.content.replace(command[0], '');
+      
+      // Remove leading space from arguments
+      if (commandArgs) {
+        commandArgs = commandArgs.substr(1);
+      }
+      
+      //** Pass commands onwards
+      
+      if (commandText === "ri") {
+        
+        modules.emojitext.regionalIndicators(message, commandArgs);
+        
+      }
+      
+      if (commandText === "help") {
+        
+        message.channel.sendMessage(help);
+        
+      }
+      
+    }
     
-    emojitext.regionalIndicators(message);
-
-  }
+  };
   
 });
 

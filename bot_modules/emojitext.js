@@ -2,13 +2,18 @@
  * EMOJITEXT - Spits out regional indicators and (maybe) other such obnoxious "emoji" characters as replacement for text
  */
 
+var help = "**Emojitext**\n";
+help += "Converts given text into emoji characters.\n";
+help += "*!ri <message>* - prints <message> using emoji characters.\n";
+
 module.exports = {
-  "regionalIndicators": function(message) {
+  "help": help,
+  "regionalIndicators": function(message, arguments) {
 
 //      // Remove non alphanumeric characters
 //      var messageContent = message.content.replace(/[\W_\!\?]+/g," ");
     
-    var messageContent = message.content;
+    var messageContent = arguments;
 
       message.channel.sendMessage(indicatorize(messageContent));
   }
