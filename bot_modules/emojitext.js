@@ -11,20 +11,20 @@ help += "*!ri <message>* - prints <message> using emoji characters.\n";
 
 var commandHandlers = {};
 
-commandHandlers.ri = function(message, arguments) {
+commandHandlers.ri = function (message, arguments) {
 
 //    // Remove non alphanumeric characters
 //    var messageContent = message.content.replace(/[\W_\!\?]+/g," ");
     
-    var messageContent = arguments;
+  var messageContent = arguments;
 
-    message.channel.sendMessage(indicatorize(messageContent));
+  message.channel.sendMessage(indicatorize(messageContent));
   
-}
+};
 
 //** Functions for ri command
 
-var indicatorize = function(text) {
+var indicatorize = function (text) {
   
   text = text.toLowerCase();
   
@@ -60,22 +60,22 @@ var indicatorize = function(text) {
     String.fromCodePoint(0x1f1fe),
     String.fromCodePoint(0x1f1ff),
     String.fromCodePoint(0x2757),
-    String.fromCodePoint(0x2753),
+    String.fromCodePoint(0x2753)
   ];
   
-  normalAlphabet.forEach(function(element, index) {
+  normalAlphabet.forEach(function (element, index) {
     
     text = text.replace(new RegExp(escapeRegExp(normalAlphabet[index]), 'g'), indicatorAlphabet[index]);
     
   });
   
-  return(text);
+  return (text);
   
 };
 
 function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-};
+}
 
 //** Module Exports
 
