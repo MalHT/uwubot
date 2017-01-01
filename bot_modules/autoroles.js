@@ -28,6 +28,15 @@ let commandHandlers = {};
 
 commandHandlers.listroles = function (message, args) {
   
+  // Check that it's not a PM
+  if (!message.guild) {
+    
+    message.channel.sendMessage("This command must be run in a server.");
+    
+    return false;
+    
+  }
+  
   let rolesMessage = "";
   
   if (managedRoles.length > 0) {
@@ -57,6 +66,15 @@ commandHandlers.listroles = function (message, args) {
 };
 
 commandHandlers.giverole = function (message, args) {
+  
+  // Check that it's not a PM
+  if (!message.guild) {
+    
+    message.channel.sendMessage("This command must be run in a server.");
+    
+    return false;
+    
+  }
   
   // Check if requested role is in the list of managed roles 
   
@@ -91,6 +109,15 @@ commandHandlers.giverole = function (message, args) {
 };
 
 commandHandlers.removerole = function(message, args) {
+  
+  // Check that it's not a PM
+  if (!message.guild) {
+    
+    message.channel.sendMessage("This command must be run in a server.");
+    
+    return false;
+    
+  }
   
   // Check if requested role is in the list of managed roles 
   
