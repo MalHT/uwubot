@@ -48,6 +48,20 @@ commandHandlers.pangolin = function (message, args) {
   
 };
 
+commandHandlers.opossum = function (message, args) {
+  
+  flickrRandomPhotoByGroup("16199074@N00", function (picture) {
+    
+    if (picture) {
+      
+      message.channel.send(picture);
+      
+    }
+    
+  });
+  
+};
+
 commandHandlers.kamijo = function (message, args) {
   
   flickrRandomPhotoBySearch("kamijo", function (picture) {
