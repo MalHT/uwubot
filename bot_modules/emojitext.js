@@ -30,7 +30,7 @@ let indicatorize = function (text) {
   
   text = text.split('').join(' ');
   
-  let normalAlphabet =  'abcdefghijklmnopqrstuvwxyz!?'.split('');
+  let normalAlphabet =  'abcdefghijklmnopqrstuvwxyz!?$+-1234567890*#'.split('');
   
   let indicatorAlphabet = [
     String.fromCodePoint(0x1f1e6),
@@ -60,7 +60,22 @@ let indicatorize = function (text) {
     String.fromCodePoint(0x1f1fe),
     String.fromCodePoint(0x1f1ff),
     String.fromCodePoint(0x2757),
-    String.fromCodePoint(0x2753)
+    String.fromCodePoint(0x2753),
+    String.fromCodePoint(0x1f4b2),
+    String.fromCodePoint(0x2795),
+    String.fromCodePoint(0x2796),
+    "\u0031\u20E3",
+    "\u0032\u20E3",
+    "\u0033\u20E3",
+    "\u0034\u20E3",
+    "\u0035\u20E3",
+    "\u0036\u20E3",
+    "\u0037\u20E3",
+    "\u0038\u20E3",
+    "\u0039\u20E3",
+    "\u0030\u20E3",
+    "\u002A\u20E3",
+    "\u0023\u20E3"
   ];
   
   normalAlphabet.forEach(function (element, index) {
