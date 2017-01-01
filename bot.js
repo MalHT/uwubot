@@ -7,6 +7,7 @@ let modules = {};
 
 modules.emojitext = require('./bot_modules/emojitext.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
+modules.animals = require('./bot_modules/animals.js');
 
 let help = "**uwubot** version whatever\n";
 help += "\n";
