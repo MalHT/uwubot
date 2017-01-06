@@ -2,7 +2,7 @@
  * AUTOROLES - Automatically assigns roles to people.
  */
 
-let config = require("../config.json");
+let botConfig = require("../config.json");
 
 let managedRoles = [];
 
@@ -13,9 +13,9 @@ help += "*!giverole <role name>* - gives you a role.\n";
 help += "*!removerole <role name>* - removes a role that you have been given.\n";
 
 try {
-  if (config.moduleConfig.autoroles.managedRoles[0]) {
+  if (botConfig.moduleConfig.autoroles.managedRoles[0]) {
 
-    managedRoles = config.moduleConfig.autoroles.managedRoles;
+    managedRoles = botConfig.moduleConfig.autoroles.managedRoles;
     
   }
 } catch (e) {

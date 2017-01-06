@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+const serverConfig = require('./server_config.js');
+
 // Modules
 
 let modules = {};
@@ -32,11 +34,22 @@ for (let module in modules) {
 
 // Config file
 
-let config = require('./config.json');
+let botConfig = require('./config.json');
 
 // Debug message for on ready
 client.on('ready', () => {
   console.log('uwu');
+  
+  // Create or update configuration files for each server the bot is present in.
+  
+  client.guilds.forEach (function (guild) {
+    
+    serverConfig.initialiseServerConfig(guild);
+    
+  });  
+  
+  console.log("Connected to " + Object.keys(client.guilds).length + " server(s).");
+  
 });
 
 // On message, process commands
@@ -84,4 +97,4 @@ client.on('message', message => {
   
 });
 
-client.login(config.apikey);
+client.login(botConfig.apikey);
