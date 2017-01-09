@@ -1,5 +1,7 @@
 const fs = require("fs");
 
+let botConfig = require('./config.json');
+
 let configCache = {};
 
 let functions = {};
@@ -51,8 +53,11 @@ functions.initialiseServerConfig = function (guild, callback) {
     
   });
 
-}
+};
 
+/**
+ * Helper function to write the initial config file, using template
+ */
 let writeInitialConfig = function (guild, callback) {
   
     // Initial config file contains id (essential), lastKnownName (useful for humans editing config), and blank moduleConfig (for convenience)
@@ -78,17 +83,22 @@ let writeInitialConfig = function (guild, callback) {
 
     });
   
-}
+};
 
+/**
+ * Get config object for the given server.
+ *
+ * Merges with overall server config also - so per-server config options will overwrite global config.
+ */
 functions.getServerConfig = function (guildId, callback) {
   
   if (configCache[guildId]) {
     
-    callback(configCache[guildId]);
+    callback(mergeConfig(botConfig, configCache[guildId]));
     
   } else {
   
-    fs.readFile("./server_config/" + guild.id + ".json", "utf8", function(err, data) {
+    fs.readFile("./server_config/" + guildId + ".json", "utf8", function(err, data) {
 
       if (err) {
 
@@ -104,7 +114,7 @@ functions.getServerConfig = function (guildId, callback) {
 
           configCache[guildId] = parsedFile;
           
-          callback(parsedFile);
+          callback(mergeConfig(botConfig, parsedFile));
 
         } catch (e) {
 
@@ -120,10 +130,55 @@ functions.getServerConfig = function (guildId, callback) {
     
   }
   
-}
+};
+
+/**
+ * Helper function to merge two config objects
+ */
+let mergeConfig = function (globalConfig, serverConfig) {
+
+  let mergedConfig = JSON.parse(JSON.stringify(globalConfig));
+
+  if (serverConfig.moduleConfig) {
+
+    for (let module in serverConfig.moduleConfig) {
+
+      // If the global config already contains configuration of this module, and it's not empty
+      if (mergedConfig.moduleConfig[module] && Object.keys(mergedConfig.moduleConfig[module]).length !== 0) {
+
+        for (let moduleProperty in mergedConfig.moduleConfig[module]) {
+
+          if (serverConfig.moduleConfig[module][moduleProperty]) {
+
+            mergedConfig.moduleConfig[module][moduleProperty] = serverConfig.moduleConfig[module][moduleProperty];
+
+          }
+
+        }
+
+      } else {
+
+        mergedConfig.moduleConfig[module] = serverConfig.moduleConfig[module];
+
+      }
+
+
+    }
+
+  }
+  
+  if (serverConfig.lastKnownName) {
+    
+    mergedConfig.lastKnownName = serverConfig.lastKnownName;
+    
+  }
+  
+  return mergedConfig;
+  
+};
 
 functions.writeServerConfig = function (guildId, config, callback) {
   
-}
+};
 
 module.exports = functions;
