@@ -1,0 +1,17 @@
+h1 {
+  text-align: center;
+}
+
+.container {
+  
+  margin: 0 auto;
+  
+  width: 500px;
+  
+}
+
+#canvas {
+  
+  border: 1px solid #000;
+  
+}

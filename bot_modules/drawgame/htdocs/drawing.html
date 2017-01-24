@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <title>uwubot games</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    
+    <script src="/simple-drawing-board.min.js"></script>
+    
+    <script type="application/ecmascript">
+   
+      function getParameterByName(name, url) {
+        if (!url) {
+          url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+      
+        var user = getParameterByName("user");
+        var token = getParameterByName("token");
+        var game = getParameterByName("gameid");
+      
+      document.addEventListener("DOMContentLoaded", function() {
+
+        if (!user || !token || !game) {
+          document.querySelector("body").innerHTML = "Sorry, this isn't a valid game.";
+        }
+        
+      });
+      
+      function changePenColour(colour) {
+        
+        sdb.setLineColor(colour);
+        
+      }
+      
+      function saveImage() {
+        
+        var canvasData = document.getElementById("canvas").toDataURL("image/png");
+        
+        var ajax = new XMLHttpRequest();
+        
+        ajax.open("POST", '/submit', false);
+        
+        ajax.onreadystatechange = function() {
+            console.log(ajax.responseText);
+        }
+        
+        ajax.setRequestHeader('Content-Type', 'application/upload');
+        
+        ajax.send("canvasData="+canvasData+"&user="+user+"&token="+ token+"&game="+game);
+
+      }
+    </script>
+  </head>
+  <body>
+  
+    <div class="container">
+    
+      <h1>Draw something!</h1>
+
+      <canvas id="canvas" width="500" height="500"></canvas>
+      
+      <div class="pen-controls">
+      
+        <button id="pen-red" onclick="changePenColour('#f00')">Red</button>
+        <button id="pen-green" onclick="changePenColour('#0f0')">Green</button>
+        <button id="pen-blue" onclick="changePenColour('#00f')">Blue</button>
+        <button id="pen-black" onclick="changePenColour('#000')">Black</button>
+        <button id="pen-white" onclick="changePenColour('#fff')">White</button>
+      
+      </div>
+      
+      <div class="submit-controls">
+      
+        <button id="submit" onclick="saveImage()">Done</button>
+      
+      </div>
+      
+    </div>
+  
+  </body>
+  
+  <script>
+  
+    var sdb = new SimpleDrawingBoard(document.getElementById('canvas'));
+    
+  </script>
+
+</html>
