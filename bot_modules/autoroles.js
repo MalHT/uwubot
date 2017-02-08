@@ -2,25 +2,15 @@
  * AUTOROLES - Automatically assigns roles to people.
  */
 
-let config = require("../config.json");
+let botConfig = require("../config.json");
 
-let managedRoles = [];
+let serverConfig = require("../server_config.js");
 
 let help = "**Autoroles**\n";
 help += "Automatically assigns roles to people.\n";
 help += "*!listroles* - shows available roles.\n";
 help += "*!giverole <role name>* - gives you a role.\n";
 help += "*!removerole <role name>* - removes a role that you have been given.\n";
-
-try {
-  if (config.moduleConfig.autoroles.managedRoles[0]) {
-
-    managedRoles = config.moduleConfig.autoroles.managedRoles;
-    
-  }
-} catch (e) {
-  console.log("No managed roles were detected for autoroles.");
-}
 
 //** Command handlers
 
@@ -39,29 +29,33 @@ commandHandlers.listroles = function (message, args) {
   
   let rolesMessage = "";
   
-  if (managedRoles.length > 0) {
+  getManagedRoles(message.guild.id, function (managedRoles) {
   
-    rolesMessage = "The following roles are managed by this bot:\n";
+    if (managedRoles.length > 0) {
 
-    managedRoles.forEach(function (element, index) {
-      
-      rolesMessage += element;
-      
-      if (index < managedRoles.length - 1) {
-        
-        rolesMessage += ", ";
-        
-      }
-      
-    });
-  
-  } else {
+      rolesMessage = "The following roles are managed by this bot:\n";
+
+      managedRoles.forEach(function (element, index) {
+
+        rolesMessage += element;
+
+        if (index < managedRoles.length - 1) {
+
+          rolesMessage += ", ";
+
+        }
+
+      });
+
+    } else {
+
+      rolesMessage = "There are currently no roles being managed by this bot :(";
+
+    }
+
+    message.member.sendMessage(rolesMessage);
     
-    rolesMessage = "There are currently no roles being managed by this bot :(";
-    
-  }
-  
-  message.member.sendMessage(rolesMessage);
+  });
   
 };
 
@@ -76,35 +70,39 @@ commandHandlers.giverole = function (message, args) {
     
   }
   
-  // Check if requested role is in the list of managed roles 
-  
-  if (managedRoles.indexOf(args) !== -1) {
-    
-    let role = message.guild.roles.find("name", args);
-    
-    if (!message.member.roles.has(role.id)) {
-      
-      message.member.addRole(role).catch(function(e) {
+  getManagedRoles(message.guild.id, function (managedRoles) {
 
-        console.log(e);
+    // Check if requested role is in the list of managed roles 
 
-        message.member.sendMessage("Something went wrong when trying to give you your role! Sorry - you should tell the bot administrator(s) about this.");
-        
-      });
+    if (managedRoles.indexOf(args) !== -1) {
 
-      message.member.sendMessage("There you go! You have been given the requested role.");
-      
+      let role = message.guild.roles.find("name", args);
+
+      if (!message.member.roles.has(role.id)) {
+
+        message.member.addRole(role).catch(function(e) {
+
+          console.log(e);
+
+          message.member.sendMessage("Something went wrong when trying to give you your role! Sorry - you should tell the bot administrator(s) about this.");
+
+        });
+
+        message.member.sendMessage("There you go! You have been given the requested role.");
+
+      } else {
+
+        message.member.sendMessage("You already have that role.");
+
+      }
+
     } else {
-      
-      message.member.sendMessage("You already have that role.");
-      
+
+      message.member.sendMessage("This is not a valid role that is managed by the bot.")
+
     }
     
-  } else {
-    
-    message.member.sendMessage("This is not a valid role that is managed by the bot.")
-    
-  }
+  });
   
 };
 
@@ -119,36 +117,58 @@ commandHandlers.removerole = function(message, args) {
     
   }
   
-  // Check if requested role is in the list of managed roles 
+  getManagedRoles(message.guild.id, function (managedRoles) {
   
-  if (managedRoles.indexOf(args) !== -1) {
-    
-    let role = message.guild.roles.find("name", args);
-    
-    if (message.member.roles.has(role.id)) {
-      
-      message.member.removeRole(role).catch(function (e) {
+    // Check if requested role is in the list of managed roles 
 
-        console.log(e);
-        
-        message.member.sendMessage("Something went wrong when trying to remove your role! Sorry - you should tell the bot administrator(s) about this.");
-        
-      });
-        
-      message.member.sendMessage("There you go! You have had the requested role removed.");
-        
+    if (managedRoles.indexOf(args) !== -1) {
+
+      let role = message.guild.roles.find("name", args);
+
+      if (message.member.roles.has(role.id)) {
+
+        message.member.removeRole(role).catch(function (e) {
+
+          console.log(e);
+
+          message.member.sendMessage("Something went wrong when trying to remove your role! Sorry - you should tell the bot administrator(s) about this.");
+
+        });
+
+        message.member.sendMessage("There you go! You have had the requested role removed.");
+
+
+      } else {
+
+        message.member.sendMessage("You don't have that role.");
+
+      }
+
+    } else {
+
+      message.member.sendMessage("This is not a valid role that is managed by the bot.")
+
+    }
+    
+  });
+  
+};
+
+let getManagedRoles = function (guildId, callback) {
+  
+  serverConfig.getServerConfig(guildId, function (config) {
+    
+    if (config.moduleConfig && config.moduleConfig.autoroles && config.moduleConfig.autoroles.managedRoles) {
+    
+      callback(config.moduleConfig.autoroles.managedRoles);
       
     } else {
       
-      message.member.sendMessage("You don't have that role.");
+      callback([]);
       
     }
     
-  } else {
-    
-    message.member.sendMessage("This is not a valid role that is managed by the bot.")
-    
-  }
+  });
   
 };
 

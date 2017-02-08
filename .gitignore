@@ -48,3 +48,7 @@ jspm_packages
 
 # Hide config file with key in it :)
 config.json
+
+# Hide other configs and data created by modules
+server_config
+data

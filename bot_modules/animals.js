@@ -2,7 +2,7 @@
  * ANIMALS - Gets important pictures of important animals
  */
 
-let config = require("../config.json");
+let botConfig = require("../config.json");
 let Flickr = require("flickrapi");
 
 let help = "**Animals**\n";
@@ -12,8 +12,8 @@ help += "*!shoob*, *!pangolin*, *!corgi*, *!duck*, *!goose*, *!seal*, *!opossum*
 //** Set up Flickr api
 
 let flickrOptions = {
-    api_key: config.moduleConfig.animals.flickrApikey,
-    secret: config.moduleConfig.animals.flickrSecretkey
+    api_key: botConfig.moduleConfig.animals.flickrApikey,
+    secret: botConfig.moduleConfig.animals.flickrSecretkey
   };
  
 //** Command handlers
