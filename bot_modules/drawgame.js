@@ -1,13 +1,20 @@
 /**
- * EMOJITEXT - Spits out regional indicators and (maybe) other such obnoxious "emoji" characters as replacement for text
+ * CHATGAMES - Silly games for Discord.
  */
 
 let help = "**Chatgames**\n";
 help += "Some games to play together.\n";
-help += "*!startgame draw* - starts drawing game.\n";
-help += "*!startgame quips* - starts quip game.\n";
+help += "*!newgame draw* - starts drawing game.\n";
+help += "*!newgame quips* - starts quip game.\n";
 
 const submissionServer = require("./drawgame/server.js");
+
+//** Games
+
+let games = {
+  draw: require("./drawgame/games/draw.js"),
+  quip: require("./drawgame/games/quip.js")
+};
 
 //** Running game information
 
@@ -25,38 +32,46 @@ commandHandlers.newgame = function (message, args) {
 
   if (message.guild) {
     
-    let game = {
-      id: randomToken(),
-      channelid: message.channel.id,
-      channel: message.channel,
-      players: {},
-      posts: {},
-      gametype: "draw",
-      maxplayers: 8,
-      acceptingplayers: true
+    if (Object.keys(games).indexOf(args) > -1) {
+    
+      let game = {
+        id: randomToken(),
+        channelid: message.channel.id,
+        channel: message.channel,
+        players: {},
+        posts: {},
+        gametype: args,
+        maxplayers: 8,
+        acceptingplayers: true
+      }
+
+      game.players[message.member.id] = {
+        token: randomToken(),
+        user: message.member,
+        owner: true
+      };
+
+      usersInGames[message.member.id] = game.id;
+
+      channelsInGames[message.channel.id] = game.id;
+
+      runningGames[game.id] = game;
+
+      message.reply("has started a game in #" + message.channel.name + "! Type !joingame in this channel to take part!")
+
+      message.channel.sendMessage("**" + game.gametype + "**" + " has started. These people are playing.").then(function (message) {
+
+        game.posts["initial"] = message;
+
+        message.edit("**" + game.gametype + "**" + " has started. These people are playing.\n" + printMembers(game));
+
+      });
+      
+    } else {
+      
+      message.reply("you must specify a valid game to start. Either you didn't provide one, or that game doesn't exist.");
+      
     }
-    
-    game.players[message.member.id] = {
-      token: randomToken(),
-      user: message.member,
-      owner: true
-    };
-    
-    usersInGames[message.member.id] = game.id;
-    
-    channelsInGames[message.channel.id] = game.id;
-    
-    runningGames[game.id] = game;
-    
-    message.reply("has started a game in #" + message.channel.name + "! Type !joingame in this channel to take part!")
-    
-    message.channel.sendMessage("**" + game.gametype + "**" + " has started. These people are playing.").then(function (message) {
-      
-      game.posts["initial"] = message;
-      
-      message.edit("**" + game.gametype + "**" + " has started. These people are playing.\n" + printMembers(game));
-      
-    });
     
   } else {
     
@@ -132,8 +147,8 @@ commandHandlers.startgame = function (message, args) {
     let game = runningGames[usersInGames[message.member.id]];
     
     if (game.players[message.member.id].owner) {
-
-      message.member.sendMessage("http://localhost:3000/?user=" + message.member.id + "&token=" + game.players[message.member.id].token + "&gameid=" + game.id);
+      
+      games[game.gametype].startGame(game);
 
     } else {
 
@@ -146,12 +161,6 @@ commandHandlers.startgame = function (message, args) {
     message.member.sendMessage("You aren't in that game.");
     
   }
-  
-};
-
-commandHandlers.draw = function (message, args) {
-  
-
   
 };
 
