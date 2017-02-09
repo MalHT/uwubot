@@ -10,7 +10,7 @@ let modules = {};
 modules.emojitext = require('./bot_modules/emojitext.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
-modules.animals = require('./bot_modules/copypasta.js');
+modules.copypasta = require('./bot_modules/copypasta.js');
 
 let help = "**uwubot** version whatever\n";
 help += "\n";
