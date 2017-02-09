@@ -1,94 +1,177 @@
 <html>
-  <head>
-    <title>uwubot games</title>
+
+<head>
+  <title>uwubot games</title>
+
+  <link rel="stylesheet" href="/style.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet">
+  
+  <script src="/simple-drawing-board.min.js"></script>
+
+  <script type="application/ecmascript">
+    function getParameterByName(name, url) {
+      if (!url) {
+        url = window.location.href;
+      }
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    var user = getParameterByName("user");
+    var token = getParameterByName("token");
+    var game = getParameterByName("gameid");
+    var time = getParameterByName("time");
     
-    <link rel="stylesheet" href="/style.css">
-    
-    <script src="/simple-drawing-board.min.js"></script>
-    
-    <script type="application/ecmascript">
-   
-      function getParameterByName(name, url) {
-        if (!url) {
-          url = window.location.href;
-        }
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    var hasSubmitted = false;
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+      changePage("drawcanvas");
+      
+      if (!user || !token || !game) {
+        document.querySelector("body").innerHTML = "Sorry, this isn't a valid game.";
       }
       
-        var user = getParameterByName("user");
-        var token = getParameterByName("token");
-        var game = getParameterByName("gameid");
-      
-      document.addEventListener("DOMContentLoaded", function() {
+      if (time) {
+        
+        if ((time - Date.now()) < 1) {
 
-        if (!user || !token || !game) {
-          document.querySelector("body").innerHTML = "Sorry, this isn't a valid game.";
+          changePage("timeup");
+          
+        } else {
+          
+          var timerbox = document.getElementById("timer");
+
+          setInterval(function () {
+
+            var timeLeft = Math.floor((time - Date.now())/1000);
+
+            timerbox.innerHTML = timeLeft;
+            
+            if ((time - Date.now()) < 1 && hasSubmitted === false) {
+              
+              changePage("timeup");
+              
+            }
+
+          }, 1000);
+        
         }
         
+      }
+      
+    });
+
+    function changePenColour(colour) {
+
+      sdb.setLineColor(colour);
+
+    }
+
+    function saveImage() {
+
+      var canvasData = document.getElementById("canvas").toDataURL("image/png");
+
+      var ajax = new XMLHttpRequest();
+
+      ajax.open("POST", '/submit', false);
+
+      ajax.onreadystatechange = function() {
+        console.log(ajax.responseText);
+      }
+
+      ajax.setRequestHeader('Content-Type', 'application/upload');
+
+      ajax.send("canvasData=" + canvasData + "&user=" + user + "&token=" + token + "&game=" + game);
+      
+      changePage("submitted");
+
+      hasSubmitted = true;
+      
+    }
+    
+    function changePage(page) {
+      
+      [].forEach.call(document.querySelectorAll('.page'),       function (el) {
+        el.style.display = 'none';
       });
       
-      function changePenColour(colour) {
-        
-        sdb.setLineColor(colour);
-        
-      }
+      document.getElementById(page).style.display = "block";
       
-      function saveImage() {
-        
-        var canvasData = document.getElementById("canvas").toDataURL("image/png");
-        
-        var ajax = new XMLHttpRequest();
-        
-        ajax.open("POST", '/submit', false);
-        
-        ajax.onreadystatechange = function() {
-            console.log(ajax.responseText);
-        }
-        
-        ajax.setRequestHeader('Content-Type', 'application/upload');
-        
-        ajax.send("canvasData="+canvasData+"&user="+user+"&token="+ token+"&game="+game);
+    }
 
-      }
-    </script>
-  </head>
-  <body>
-  
-    <div class="container">
-    
-      <h1>Draw something!</h1>
-
-      <canvas id="canvas" width="500" height="500"></canvas>
-      
-      <div class="pen-controls">
-      
-        <button id="pen-red" onclick="changePenColour('#f00')">Red</button>
-        <button id="pen-green" onclick="changePenColour('#0f0')">Green</button>
-        <button id="pen-blue" onclick="changePenColour('#00f')">Blue</button>
-        <button id="pen-black" onclick="changePenColour('#000')">Black</button>
-        <button id="pen-white" onclick="changePenColour('#fff')">White</button>
-      
-      </div>
-      
-      <div class="submit-controls">
-      
-        <button id="submit" onclick="saveImage()">Done</button>
-      
-      </div>
-      
-    </div>
-  
-  </body>
-  
-  <script>
-  
-    var sdb = new SimpleDrawingBoard(document.getElementById('canvas'));
-    
   </script>
+</head>
+
+<body>
+
+  <div class="container page" id="drawcanvas">
+
+    <div id="timer"></div>
+    
+    <h1>Draw something!</h1>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <div class="pen-controls">
+
+      <button id="pen-red" onclick="changePenColour('#f00')" class="penbutton">Red</button>
+      <button id="pen-green" onclick="changePenColour('#0f0')" class="penbutton">Green</button>
+      <button id="pen-blue" onclick="changePenColour('#00f')" class="penbutton">Blue</button>
+      <button id="pen-yellow" onclick="changePenColour('#ff0')" class="penbutton">Yellow</button>
+      <button id="pen-purple" onclick="changePenColour('#800080')" class="penbutton">Purple</button>
+      <button id="pen-black" onclick="changePenColour('#000')" class="penbutton">Black</button>
+      <button id="pen-white" onclick="changePenColour('#fff')" class="penbutton">White</button>
+
+    </div>
+
+    <div class="submit-controls">
+
+      <button id="submit" onclick="saveImage()">Done</button>
+
+    </div>
+
+  </div>
+  
+  <div class="container page" id="invalidgame">
+    
+    <h1>That's not a valid game!</h1>
+    
+  </div>  
+  
+  <div class="container page" id="submitted">
+    
+    <h1>Your drawing has been sent!</h1>
+    
+    <h2>You can close this window now.</h2>
+    
+  </div>    
+  
+  <div class="container page" id="error">
+    
+    <h1>Something went wrong :(</h1>
+    
+  </div>  
+  
+  <div class="container page" id="timeup">
+    
+    <h1>Whoops! Time's up!</h1>
+    
+    <h2>You can close this window now.</h2>
+    
+  </div>
+  
+
+</body>
+
+<script>
+  var sdb = new SimpleDrawingBoard(document.getElementById('canvas'));
+
+</script>
 
 </html>

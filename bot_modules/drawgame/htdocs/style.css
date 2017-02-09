@@ -1,10 +1,16 @@
 h1 {
   text-align: center;
+  font-family: "Pangolin", sans-serif;
+}
+
+h2 {
+  text-align: center;
+  font-family: "Pangolin", sans-serif;
 }
 
 .container {
   
-  margin: 0 auto;
+  margin: 20px auto;
   
   width: 500px;
   
@@ -13,5 +19,82 @@ h1 {
 #canvas {
   
   border: 1px solid #000;
+  margin-bottom: 10px;
   
 }
+
+#timer {
+  background-color: dodgerblue;
+  color: white;
+  
+  width: 60px;
+  height: 60px;
+  
+  font-size: 30px;
+  
+  position: absolute;
+  margin-left: 550px;
+  font-family: "Pangolin", sans-serif;
+  margin-top: -10px;
+  
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;  
+}
+
+.pen-controls {
+  float: left;
+}
+
+.submit-controls {
+  float: right;
+}
+
+.submit-controls button {
+  font-weight: bold;
+}
+
+button {
+  background: lightgray;
+  border: 1px solid #999;
+  padding: 10px;
+  font-family: "Pangolin", sans-serif;
+}
+
+.penbutton {
+  padding-left: 30px;
+}
+
+#pen-red::before {
+  background-color: red;
+}
+#pen-green::before {
+  background-color: #0f0;
+}
+#pen-blue::before {
+  background-color: blue;
+}
+#pen-yellow::before {
+  background-color: yellow;
+}
+#pen-purple::before {
+  background-color: purple;
+}
+#pen-black::before {
+  background-color: black;
+}
+#pen-white::before {
+  background-color: white;
+}
+
+.penbutton::before {
+  content: "";
+  width: 17px;
+  height: 17px;
+  border-radius: 10px;
+  border: 1px solid;
+  position: absolute;
+  margin-left: -25px;
+  margin-top: -3px;
+}
+
