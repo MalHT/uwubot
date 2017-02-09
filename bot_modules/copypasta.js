@@ -53,7 +53,15 @@ commandHandlers.listpastas = function (message, args) {
 
   getPastas(message.guild.id, function (pastas) {
 
-    message.channel.sendMessage("```" + Object.keys(pastas) + "```");
+    if (typeof pastas === "object" && Object.keys(pastas).length > 0) {
+      
+      message.channel.sendMessage("```" + Object.keys(pastas) + "```");
+      
+    } else {
+      
+      message.channel.sendMessage("There aren't any copypastas configured for this server. Sorry :(");
+      
+    }
 
   });
 
