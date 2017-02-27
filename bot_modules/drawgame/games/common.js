@@ -1,5 +1,5 @@
 var commonExports = {};
 
-commonExports.series = require('run-series');
+commonExports.waterfall = require('async-waterfall');
 
 module.exports = commonExports;

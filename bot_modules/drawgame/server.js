@@ -12,19 +12,38 @@ const fs = require('fs');
 const qs = require('querystring');
 let pdu = require('parse-data-uri');
 
+let globalGames = require("./globalGames.js");
+
 const requestHandler = (request, response) => {  
   
   let requestUrl = url.parse(request.url);
   
   if (requestUrl.pathname === "/") {
     
+    var queryData = url.parse(request.url, true).query;
+    
     response.writeHead(200, {'Content-Type': 'text/html'});
+    
+    
+    console.log(globalGames.usersInGames);
+    
+    if (queryData.user && queryData.gameid) {
     
     getFile("./bot_modules/drawgame/htdocs/drawing.html", function (data) {
       
       response.end(data);
       
     });
+      
+    } else {
+      
+      getFile("./bot_modules/drawgame/htdocs/nogame.html", function (data) {
+
+        response.end(data);
+
+      });
+      
+    }
     
   } else if (requestUrl.pathname === "/submit") {
     
@@ -46,6 +65,8 @@ const requestHandler = (request, response) => {
           var POST = qs.parse(body);
           
           try {
+            
+//            if {game.}
             
             let image = parseImage(POST.canvasData.replace(/ /g, "+"));
 

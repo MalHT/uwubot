@@ -18,11 +18,7 @@ let games = {
 
 //** Running game information
 
-let runningGames = {};
-
-let usersInGames = {};
-
-let channelsInGames = {};
+let globalGames = require("./drawgame/globalGames.js");
 
 //** Command handlers
 
@@ -51,11 +47,11 @@ commandHandlers.newgame = function (message, args) {
         owner: true
       };
 
-      usersInGames[message.member.id] = game.id;
+      globalGames.usersInGames[message.member.id] = game.id;
 
-      channelsInGames[message.channel.id] = game.id;
+      globalGames.channelsInGames[message.channel.id] = game.id;
 
-      runningGames[game.id] = game;
+      globalGames.runningGames[game.id] = game;
 
       message.reply("has started a game in #" + message.channel.name + "! Type !joingame in this channel to take part!")
 
@@ -85,9 +81,9 @@ commandHandlers.joingame = function (message, args) {
   
   if (message.guild) {
     
-    if (channelsInGames[message.channel.id]) {
+    if (globalGames.channelsInGames[message.channel.id]) {
       
-      let game = runningGames[channelsInGames[message.channel.id]];
+      let game = globalGames.runningGames[globalGames.channelsInGames[message.channel.id]];
       
       if (game.acceptingplayers) {
         
@@ -98,7 +94,7 @@ commandHandlers.joingame = function (message, args) {
             user: message.member
           };
 
-          usersInGames[message.member.id] = game.id;
+          globalGames.usersInGames[message.member.id] = game.id;
           
           message.reply("welcome! You're now part of the game.");
           
@@ -142,9 +138,9 @@ let printMembers = function (game) {
 
 commandHandlers.startgame = function (message, args) {
   
-  if (usersInGames[message.member.id]) {
+  if (globalGames.usersInGames[message.member.id]) {
     
-    let game = runningGames[usersInGames[message.member.id]];
+    let game = globalGames.runningGames[globalGames.usersInGames[message.member.id]];
     
     if (game.players[message.member.id].owner) {
       
@@ -170,9 +166,9 @@ let randomToken = function() {
 
 submissionServer.submissionEvents.on("imageUploaded", function (data) {
   
-  if (runningGames[data.game]) {
+  if (globalGames.runningGames[data.game]) {
     
-    let game = runningGames[data.game];
+    let game = globalGames.runningGames[data.game];
     
     if (game.players[data.user]) {
       
