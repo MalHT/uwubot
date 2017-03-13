@@ -39,6 +39,9 @@ let botConfig = require('./config.json');
 
 // Debug message for on ready
 client.on('ready', () => {
+  
+  // Print startup console header
+  
   console.log('uwu');
   
   // Create or update configuration files for each server the bot is present in.
@@ -49,7 +52,13 @@ client.on('ready', () => {
     
   });  
   
-  console.log("Connected to " + Object.keys(client.guilds).length + " server(s).");
+  // Print server connection status
+  
+  console.log("Connected to " + client.guilds.size + " server(s).");
+  
+  // Set game status
+  
+  client.user.setGame("!uwuhelp | https://github.com/MalHT/uwubot");
   
 });
 
@@ -86,7 +95,7 @@ client.on('message', message => {
         
       }
       
-      if (commandText === "help") {
+      if (commandText === "uwuhelp") {
         
         message.channel.sendMessage(help);
         
