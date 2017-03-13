@@ -2,6 +2,24 @@
 
 A meme bot for spenglers
 
+## Features
+
+uwubot is built to allow easy extension and customisation through use of modules.
+
+The base bot provides cool features that include:
+
+- Automated role management (users can request roles)
+- Automatic 🇪 🇲 🇴 🇯 🇮 🇹 🇪 🇽 🇹
+- Copypasta dumping
+- Animal picture fetching
+
+Features that may or may not be coming soon:
+
+- `!ebooks` command to generate mashed up messages
+- Discord-based word and drawing games
+- Built-in web server (maybe!)
+- Configuration management via admin commands (maybe!)
+
 ## Setup
 
 Install it! Clone the repository and run `npm install`. This should get all the dependencies in place.
