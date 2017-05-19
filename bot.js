@@ -11,11 +11,13 @@ modules.emojitext = require('./bot_modules/emojitext.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');
+modules.star = require('./bot_modules/star.js');
 
 let help = "**uwubot** version whatever\n";
 help += "\n";
 
 let commandHandlers = {};
+let reactHandlers = {};
 
 for (let module in modules) {
     
@@ -28,6 +30,12 @@ for (let module in modules) {
   if (modules[module].commandHandlers) {
     
     Object.assign(commandHandlers, modules[module].commandHandlers);
+    
+  }
+  
+  if (modules[module].reactHandlers) {
+    
+    Object.assign(reactHandlers, modules[module].reactHandlers);
     
   }
   
@@ -104,6 +112,19 @@ client.on('message', message => {
     }
     
   };
+  
+});
+
+// On reaction added, process handlers for that too
+client.on('messageReactionAdd', messageReaction => {
+  
+  //** Pass reacts onwards
+
+  for (let reactHandlerName in reactHandlers) {
+
+      reactHandlers[reactHandlerName](messageReaction);
+
+  }
   
 });
 
