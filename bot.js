@@ -18,19 +18,19 @@ help += "\n";
 let commandHandlers = {};
 
 for (let module in modules) {
-    
+
   if (modules[module].help) {
-        
+
     help += modules[module].help;
-    
+
   }
-  
+
   if (modules[module].commandHandlers) {
-    
+
     Object.assign(commandHandlers, modules[module].commandHandlers);
-    
+
   }
-  
+
 };
 
 // Config file
@@ -39,72 +39,72 @@ let botConfig = require('./config.json');
 
 // Debug message for on ready
 client.on('ready', () => {
-  
+
   // Print startup console header
-  
+
   console.log('uwu');
-  
+
   // Create or update configuration files for each server the bot is present in.
-  
+
   client.guilds.forEach (function (guild) {
-    
+
     serverConfig.initialiseServerConfig(guild);
-    
-  });  
-  
+
+  });
+
   // Print server connection status
-  
+
   console.log("Connected to " + client.guilds.size + " server(s).");
-  
+
   // Set game status
-  
+
   client.user.setGame("!uwuhelp | https://github.com/MalHT/uwubot");
-  
+
 });
 
 // On message, process commands
 client.on('message', message => {
-  
+
   if (message.content) {
-  
+
     let command = message.content.match(/^\!\w+/);
 
-    if (command) {
-      
+    if (command && message.author.bot == false) {
+
       //** Process command text and arguments
-      
+
       // commandText is the command without the !
       let commandText = command[0].substr(1);
-      
+
       let commandArgs = message.content.replace(command[0], '');
-      
+
       // Remove leading space from arguments
       if (commandArgs) {
         commandArgs = commandArgs.substr(1);
       }
-      
+
       //** Pass commands onwards
-      
+
       for (let commandHandlerName in commandHandlers) {
-        
+
         if (commandText === commandHandlerName) {
-          
+
           commandHandlers[commandHandlerName](message, commandArgs);
-          
+
         }
-        
+
       }
-      
+
       if (commandText === "uwuhelp") {
-        
+
         message.channel.sendMessage(help);
-        
+
       }
-      
+
     }
-    
+
   };
-  
+
 });
 
 client.login(botConfig.apikey);
