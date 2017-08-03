@@ -64,7 +64,7 @@ commandHandlers.opossum = function (message, args) {
 
 commandHandlers.bun = function (message, args) {
 
-  flickrRandomPhotoByGroup("480083@N22", function (picture) {
+  flickrRandomPhotoBySearch("bunny+rabbit", function (picture) {
 
     if (picture) {
 
