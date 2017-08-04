@@ -15,23 +15,23 @@ commandHandlers.ri = function (message, args) {
 
 //    // Remove non alphanumeric characters
 //    let messageContent = message.content.replace(/[\W_\!\?]+/g," ");
-    
+
   let messageContent = args;
 
   message.channel.sendMessage(indicatorize(messageContent));
-  
+
 };
 
 //** Functions for ri command
 
 let indicatorize = function (text) {
-  
+
   text = text.toLowerCase();
-  
-  text = text.split('').join(' ');
-  
+
+  text = [...text].join(' ');
+
   let normalAlphabet =  'abcdefghijklmnopqrstuvwxyz!?$+-1234567890*#'.split('');
-  
+
   let indicatorAlphabet = [
     String.fromCodePoint(0x1f1e6),
     String.fromCodePoint(0x1f1e7),
@@ -77,15 +77,15 @@ let indicatorize = function (text) {
     "\u002A\u20E3",
     "\u0023\u20E3"
   ];
-  
+
   normalAlphabet.forEach(function (element, index) {
     
     text = text.replace(new RegExp(escapeRegExp(normalAlphabet[index]), 'g'), indicatorAlphabet[index]);
-    
+
   });
-  
+
   return (text);
-  
+
 };
 
 function escapeRegExp(str) {
