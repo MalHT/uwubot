@@ -11,6 +11,7 @@ modules.emojitext = require('./bot_modules/emojitext.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');
+modules.rationals = require('./bot_modules/rationals.js');
 
 let help = "**uwubot** version whatever\n";
 help += "\n";
