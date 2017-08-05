@@ -2,9 +2,6 @@
  * RATIONAL - Generates Rational Skeptic YouTube names
  */
 
-const generalFunctions = require('../builtin_modules/general_functions.js');
-
-
 let help = "**Rational**\n";
 help += "Generates Rational Skeptic YouTube names.\n";
 help += "*!rational.\n";
