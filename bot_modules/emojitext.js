@@ -22,6 +22,43 @@ commandHandlers.ri = function (message, args) {
 
 };
 
+commandHandlers.clap = function (message, args) {
+
+  let messageContent = args;
+
+  let emoji = "👏";
+
+  let argsFound = false;
+
+  while (!argsFound) {
+
+    let m = messageContent.match(/-(\S+):\"(.+)\"/);
+
+    if (m) {
+
+      if (m[1] === "emoji") {
+
+        emoji = m[2];
+
+      }
+
+      messageContent = messageContent.replace(/-(\S+):\"(.+)\"/, "");
+
+    } else {
+      argsFound = true;
+    }
+
+  }
+
+  messageContent = escapeRegExp(messageContent);
+
+  messageContent = messageContent.replace(/([^\s]+)[\s+]/g, "$1 " + emoji + " ");
+  // messageContent = messageContent.replace(/(\w)\s+(\w)/g, "$1 " + emoji + " $2");
+
+  message.channel.sendMessage(messageContent);
+
+};
+
 //** Functions for ri command
 
 let indicatorize = function (text) {
@@ -79,7 +116,7 @@ let indicatorize = function (text) {
   ];
 
   normalAlphabet.forEach(function (element, index) {
-    
+
     text = text.replace(new RegExp(escapeRegExp(normalAlphabet[index]), 'g'), indicatorAlphabet[index]);
 
   });
