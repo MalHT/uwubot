@@ -21,7 +21,7 @@ commandHandlers.listroles = function (message, args) {
   // Check that it's not a PM
   if (!message.guild) {
     
-    message.channel.sendMessage("This command must be run in a server.");
+    message.channel.send("This command must be run in a server.");
     
     return false;
     
@@ -53,7 +53,7 @@ commandHandlers.listroles = function (message, args) {
 
     }
 
-    message.member.sendMessage(rolesMessage);
+    message.member.send(rolesMessage);
     
   });
   
@@ -64,7 +64,7 @@ commandHandlers.giverole = function (message, args) {
   // Check that it's not a PM
   if (!message.guild) {
     
-    message.channel.sendMessage("This command must be run in a server.");
+    message.channel.send("This command must be run in a server.");
     
     return false;
     
@@ -84,21 +84,21 @@ commandHandlers.giverole = function (message, args) {
 
           console.log(e);
 
-          message.member.sendMessage("Something went wrong when trying to give you your role! Sorry - you should tell the bot administrator(s) about this.");
+          message.member.send("Something went wrong when trying to give you your role! Sorry - you should tell the bot administrator(s) about this.");
 
         });
 
-        message.member.sendMessage("There you go! You have been given the requested role.");
+        message.member.send("There you go! You have been given the requested role.");
 
       } else {
 
-        message.member.sendMessage("You already have that role.");
+        message.member.send("You already have that role.");
 
       }
 
     } else {
 
-      message.member.sendMessage("This is not a valid role that is managed by the bot.")
+      message.member.send("This is not a valid role that is managed by the bot.")
 
     }
     
@@ -111,7 +111,7 @@ commandHandlers.removerole = function(message, args) {
   // Check that it's not a PM
   if (!message.guild) {
     
-    message.channel.sendMessage("This command must be run in a server.");
+    message.channel.send("This command must be run in a server.");
     
     return false;
     
@@ -131,22 +131,22 @@ commandHandlers.removerole = function(message, args) {
 
           console.log(e);
 
-          message.member.sendMessage("Something went wrong when trying to remove your role! Sorry - you should tell the bot administrator(s) about this.");
+          message.member.send("Something went wrong when trying to remove your role! Sorry - you should tell the bot administrator(s) about this.");
 
         });
 
-        message.member.sendMessage("There you go! You have had the requested role removed.");
+        message.member.send("There you go! You have had the requested role removed.");
 
 
       } else {
 
-        message.member.sendMessage("You don't have that role.");
+        message.member.send("You don't have that role.");
 
       }
 
     } else {
 
-      message.member.sendMessage("This is not a valid role that is managed by the bot.")
+      message.member.send("This is not a valid role that is managed by the bot.")
 
     }
     

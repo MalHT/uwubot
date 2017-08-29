@@ -18,7 +18,7 @@ commandHandlers.ri = function (message, args) {
 
   let messageContent = args;
 
-  message.channel.sendMessage(indicatorize(messageContent));
+  message.channel.send(indicatorize(messageContent));
 
 };
 

@@ -17,7 +17,7 @@ commandHandlers.pasta = function (message, args) {
 
   if (!message.guild) {
 
-    message.channel.sendMessage("This command must be run in a server.");
+    message.channel.send("This command must be run in a server.");
 
     return false;
 
@@ -29,11 +29,11 @@ commandHandlers.pasta = function (message, args) {
 
       let pasta = pastas[args];
 
-      message.channel.sendMessage(pasta);
+      message.channel.send(pasta);
       
     } else {
 
-      message.channel.sendMessage("Couldn't find that pasta!");
+      message.channel.send("Couldn't find that pasta!");
 
     };
     
@@ -45,7 +45,7 @@ commandHandlers.listpastas = function (message, args) {
 
   if (!message.guild) {
 
-    message.channel.sendMessage("This command must be run in a server.")
+    message.channel.send("This command must be run in a server.")
 
     return false;
 
@@ -55,11 +55,11 @@ commandHandlers.listpastas = function (message, args) {
 
     if (typeof pastas === "object" && Object.keys(pastas).length > 0) {
       
-      message.channel.sendMessage("```" + Object.keys(pastas) + "```");
+      message.channel.send("```" + Object.keys(pastas) + "```");
       
     } else {
       
-      message.channel.sendMessage("There aren't any copypastas configured for this server. Sorry :(");
+      message.channel.send("There aren't any copypastas configured for this server. Sorry :(");
       
     }
 

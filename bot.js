@@ -98,7 +98,7 @@ client.on('message', message => {
 
       if (commandText === "uwuhelp") {
 
-        message.channel.sendMessage(help);
+        message.channel.send(help);
 
       }
 

@@ -13,7 +13,7 @@ let commandHandlers = {};
 
 commandHandlers.rational = function (message, args) {
 
-  message.channel.sendMessage(getRationalName());
+  message.channel.send(getRationalName());
   
 };
 
