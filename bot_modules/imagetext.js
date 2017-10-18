@@ -16,7 +16,8 @@ help += "*!im <image> <text>* - puts <text> on <image>.\n";
 // List of all available images
 // Images live in images/.
 // file is the image's filename.
-// width and height are the dimensions of the text label.
+// size is the size of the text label.
+// size should be of the form "WxH".
 // offset is the position of the label's top left corner.
 // offset should be of the form "+X+Y".
 // TODO Consider reading this from a file or something instead of hardcoding it.
@@ -24,14 +25,12 @@ help += "*!im <image> <text>* - puts <text> on <image>.\n";
 const images = {
   jesus: {
     file: "jesus.png",
-    width: 222,
-    height: 179,
+    size: "222x179",
     offset: "+147+114"
   },
   google: {
     file: "google.png",
-    width: 316,
-    height: 93,
+    size: "316x93",
     offset: "+360+505"
   }
 };
@@ -83,29 +82,13 @@ commandHandlers.im = function (message, args) {
 };
 
 function sendImage(image, text, channel) {
+  var attachment = new Discord.Attachment(im("bot_modules/imagetext/" + image.file)
+  .gravity("Center").in("-size").in(image.size).font(font).out("caption:" + text)
+  .in("bot_modules/imagetext/" + image.file).out("+swap").gravity("northwest")
+  .geometry(image.offset).out("-composite").stream(), image.file);
 
-  let tmpfile = "tmp-" + Math.random().toString(36).substr(2);
+  channel.send("",attachment);
 
-  // Generate the label and save it to file.
-  // I would pass a stream directly to composite(), but it only supports files.
-  im(image.width, image.height).in("-background").in("transparent")
-  .gravity("Center").font(font).out("caption:"+text)
-  .write("/tmp/" + tmpfile + ".png", function (err) {
-
-    // Log the error and exit if something went wrong when writing the label.
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    // TODO Find a better way to unlink the label after sending.
-    // then() with a _ feels very hacky.
-    // Also, calling unlink without a callback is deprecated.
-    console.log("imagetext/" + image.file);
-    channel.send("",new Discord.Attachment(im("bot_modules/imagetext/" + image.file).composite("/tmp/" + tmpfile + ".png").geometry(image.offset).stream(), "file.png"))
-    .then(_ => fs.unlink("/tmp/" + tmpfile + ".png"));
-
-  });
 };
 
 //** Module Exports
