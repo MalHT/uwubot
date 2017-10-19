@@ -12,7 +12,7 @@ modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');
 modules.rationals = require('./bot_modules/rationals.js');
-modules.imagetext = require('./bot_modules/imagetext.js');
+modules.clap = require('./bot_modules/clap.js');
 
 let help = "**uwubot** version whatever\n";
 help += "\n";
