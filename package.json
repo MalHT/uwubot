@@ -5,8 +5,7 @@
   "main": "bot.js",
   "dependencies": {
     "discord.js": "^11.0.0",
-    "flickrapi": "^0.6.0",
-    "gm": "^1.23.0"
+    "flickrapi": "^0.6.0"
   },
   "devDependencies": {},
   "scripts": {
