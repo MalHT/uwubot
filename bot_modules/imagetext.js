@@ -23,28 +23,26 @@ help += "*!im <image> <text>* - puts <text> on <image>.\n";
 // TODO Consider reading this from a file or something instead of hardcoding it.
 // TODO Maybe make this per-server? I'm too bad to understand how !pasta does it.
 const images = {
-  dril: {
-    file: "dril.png",
-    size: "1189x285",
-    offset: "+41+162",
-    align: "west",
-    bgcolor: "white",
-    fgcolor: "black"
-  },
   jesus: {
     file: "jesus.png",
     size: "222x179",
-    offset: "+147+114",
-    align: "center",
-    bgcolor: "white",
-    fgcolor: "black"
+    offset: "+147+114"
+  },
+  google: {
+    file: "google.png",
+    size: "316x93",
+    offset: "+360+505"
   },
   verrit: {
     file: "verrit.jpg",
     size: "1710x564",
-    offset: "+276+234",
-    align: "west",
-    bgcolor: "transparent",
+    offset: "+276+234"
+  },
+  dril: {
+    file: "dril.png",
+    size: "1189x285",
+    offset: "+41+162",
+    bgcolor: "white",
     fgcolor: "black"
   }
 };
@@ -52,7 +50,7 @@ const images = {
 // The font that is used for the text label.
 // List available fonts with `convert -list font`.
 // TODO Choose a better font with emoji support.
-const font = "DejaVu-Sans";
+const font = "Noto-Sans-UI-Regular";
 
 //** Command handlers
 
@@ -96,11 +94,10 @@ commandHandlers.im = function (message, args) {
 };
 
 function sendImage(image, text, channel) {
-  var attachment = new Discord.Attachment(im("images/" + image.file)
-  .gravity(image.align).background(image.bgcolor).stroke(image.fgcolor)
-  .in("-size").in(image.size).out("caption:" + text).in("images/" + image.file)
-  .out("+swap").gravity("northwest").geometry(image.offset).out("-composite")
-  .stream());
+  var attachment = new Discord.Attachment(im("bot_modules/imagetext/" + image.file)
+  .gravity("Center").background("transparent").in("-size").in(image.size).font(font).out("caption:" + text)
+  .in("bot_modules/imagetext/" + image.file).out("+swap").gravity("northwest")
+  .geometry(image.offset).out("-composite").stream(), image.file);
 
   channel.send("",attachment);
 
