@@ -32,6 +32,18 @@ const images = {
     file: "google.png",
     size: "316x93",
     offset: "+360+505"
+  },
+  verrit: {
+    file: "verrit.jpg",
+    size: "1710x564",
+    offset: "+276+234"
+  },
+  dril: {
+    file: "dril.png",
+    size: "1189x285",
+    offset: "+41+162",
+    bgcolor: "white",
+    fgcolor: "black"
   }
 };
 
@@ -68,7 +80,7 @@ commandHandlers.im = function (message, args) {
   }
 
   var words = args.split(" "); // Split the args into words.
-  var command = words.splice(0,1); // Remove the first word.
+  var command = words.splice(0,1)[0].toLowerCase(); // Remove the first word.
 
   // Complain if we didn't get a valid command.
   if (!(command in images)) {
@@ -83,7 +95,7 @@ commandHandlers.im = function (message, args) {
 
 function sendImage(image, text, channel) {
   var attachment = new Discord.Attachment(im("bot_modules/imagetext/" + image.file)
-  .gravity("Center").in("-size").in(image.size).font(font).out("caption:" + text)
+  .gravity("Center").background("transparent").in("-size").in(image.size).font(font).out("caption:" + text)
   .in("bot_modules/imagetext/" + image.file).out("+swap").gravity("northwest")
   .geometry(image.offset).out("-composite").stream(), image.file);
 
