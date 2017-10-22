@@ -27,7 +27,7 @@ const images = {
     file: "dril.png",
     size: "1189x285",
     offset: "+41+162",
-    align: "west",
+    align: "West",
     bgcolor: "white",
     fgcolor: "black"
   },
@@ -35,7 +35,7 @@ const images = {
     file: "jesus.png",
     size: "222x179",
     offset: "+147+114",
-    align: "center",
+    align: "Center",
     bgcolor: "white",
     fgcolor: "black"
   },
@@ -43,7 +43,7 @@ const images = {
     file: "google.png",
     size: "316x93",
     offset: "+360+505",
-    align: "center",
+    align: "Center",
     bgcolor: "white",
     fgcolor: "black"
   },
@@ -51,7 +51,7 @@ const images = {
     file: "verrit.jpg",
     size: "1710x564",
     offset: "+276+234",
-    align: "west",
+    align: "West",
     bgcolor: "transparent",
     fgcolor: "black"
   }
