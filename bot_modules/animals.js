@@ -50,7 +50,7 @@ commandHandlers.pangolin = function (message, args) {
 
 commandHandlers.opossum = function (message, args) {
 
-  flickrRandomPhotoByGroup("16199074@N00", function (picture) {
+  flickrRandomPhotoBySearch("opossums", function (picture) {
 
     if (picture) {
 
