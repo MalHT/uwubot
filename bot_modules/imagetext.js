@@ -54,6 +54,14 @@ const images = {
     align: "West",
     bgcolor: "transparent",
     fgcolor: "black"
+  },
+  opinions: {
+    file: "opinions.jpg",
+    size: "204x247",
+    offset: "+657+74",
+    align: "East",
+    bgcolor: "transparent",
+    fgcolor: "black"
   }
 };
 
