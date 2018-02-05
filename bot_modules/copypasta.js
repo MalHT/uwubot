@@ -54,8 +54,22 @@ commandHandlers.listpastas = function (message, args) {
   getPastas(message.guild.id, function (pastas) {
 
     if (typeof pastas === "object" && Object.keys(pastas).length > 0) {
+
+      pastaMessage = "Pastas:\n";
+
+      Object.keys(pastas).forEach(function (element, index) {
+  
+        pastaMessage += element;
+  
+        if (index < Object.keys(pastas).length - 1) {
+  
+          pastaMessage+= ", ";
+  
+        }
+  
+      });
       
-      message.channel.send("```" + Object.keys(pastas) + "```");
+      message.channel.send(pastaMessage + "```");
       
     } else {
       
