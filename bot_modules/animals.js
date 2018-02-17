@@ -146,6 +146,34 @@ commandHandlers.tardi = function (message, args) {
 
 };
 
+commandHandlers.cat = function (message, args) {
+
+  flickrRandomPhotoBySearch("cat", function (picture) {
+
+    if (picture) {
+
+      message.channel.send(picture);
+
+    }
+
+  });
+
+};
+
+commandHandlers.shibe = function (message, args) {
+
+  flickrRandomPhotoBySearch("shiba inu+dog", function (picture) {
+
+    if (picture) {
+
+      message.channel.send(picture);
+
+    }
+
+  });
+
+};
+
 commandHandlers.duck = function (message, args) {
 
   flickrRandomPhotoByGroup("16694458@N00", function (picture) {
