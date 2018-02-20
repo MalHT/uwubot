@@ -7,7 +7,7 @@ let Flickr = require("flickrapi");
 
 let help = "**Animals**\n";
 help += "Gets important pictures of important animals.\n";
-help += "*!shoob*, *!pangolin*, *!corgi*, *!duck*, *!goose*, *!seal*, *!opossum*, *!bun*, *!capy*, *!axolotl*, *!fennec* *!tardi*.\n";
+help += "*!shoob*, *!pangolin*, *!corgi*, *!duck*, *!goose*, *!seal*, *!opossum*, *!bun*, *!capy*, *!axolotl*, *!fennec*, *!tardi*, *!shibe*, *!cat* (finally).\n";
 
 //** Set up Flickr api
 
