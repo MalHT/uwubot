@@ -50,6 +50,8 @@ commandHandlers.clap = function (message, args) {
 
   }
 
+  messageContent = messageContent.replace("@", "(at)");
+
   messageContent = escapeRegExp(messageContent);
 
   messageContent = messageContent.replace(/([^\s]+)[\s+]/g, "$1 " + emoji + " ");
