@@ -266,7 +266,7 @@ commandHandlers.listmanglers = function (message, args) {
 
 			let modeString = `${cs.name.replace(/\s/g, "").toLowerCase()}-${variant.name.replace(/\s/g, "").toLowerCase()}`;
 
-			listMessage += `\t${variant.name}  ${varAliasesMessage}: \n`;
+			listMessage += `\t${variant.name} ${varAliasesMessage}: \n`;
 			listMessage += "\t\t" + mangleText(modeString, exampleText) + "\n";
 		}
 		listMessage += "\n";
