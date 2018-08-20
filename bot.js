@@ -8,6 +8,7 @@ const serverConfig = require('./server_config.js');
 let modules = {};
 
 modules.emojitext = require('./bot_modules/emojitext.js');
+modules.unicode = require('./bot_modules/unicode.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');
@@ -55,11 +56,14 @@ client.on('ready', () => {
 
   // Print server connection status
 
-  console.log("Connected to " + client.guilds.size + " server(s).");
+  if (client.guilds.size === 1)
+    console.log(`Connected to ${client.guilds.size} server.`);
+  else
+    console.log(`Connected to ${client.guilds.size} servers.`);
 
   // Set game status
 
-  client.user.setGame("!uwuhelp | https://github.com/MalHT/uwubot");
+  client.user.setActivity("!uwuhelp\nhttps://github.com/MalHT/uwubot");
 
 });
 
