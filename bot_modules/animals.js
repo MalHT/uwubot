@@ -12,9 +12,9 @@ help += "*!shoob*, *!pangolin*, *!corgi*, *!duck*, *!goose*, *!seal*, *!opossum*
 //** Set up Flickr api
 
 let flickrOptions = {
-    api_key: botConfig.moduleConfig.animals.flickrApikey,
-    secret: botConfig.moduleConfig.animals.flickrSecretkey
-  };
+  api_key: botConfig.moduleConfig.animals.flickrApikey,
+  secret: botConfig.moduleConfig.animals.flickrSecretkey
+};
 
 //** Command handlers
 

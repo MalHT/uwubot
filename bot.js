@@ -8,6 +8,7 @@ const serverConfig = require('./server_config.js');
 let modules = {};
 
 modules.emojitext = require('./bot_modules/emojitext.js');
+modules.unicode = require('./bot_modules/unicode.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');

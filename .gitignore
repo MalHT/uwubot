@@ -52,3 +52,5 @@ config.json
 # Hide other configs and data created by modules
 server_config
 data
+.DS_Store
+package-lock.json
