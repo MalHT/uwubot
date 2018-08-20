@@ -11,7 +11,7 @@
 let help = "**Unicode**\n";
 help += "Replaces letters with letterlike symbols.\n";
 help += "*!mangle `<mode>` `<message>`* - prints `<message>` using letterlike symbols according to `<mode>`.\n";
-help += "*!listmanglers* - list all mangler modes.\n";
+help += "*!listmanglers* - shows available mangler modes and examples.\n";
 
 let reDigits = /^\d+$/;
 let reAlpha = /^([a-zA-z])+$/;
