@@ -60,7 +60,7 @@ client.on('ready', () => {
 
   // Set game status
 
-  client.user.setGame("!uwuhelp | https://github.com/MalHT/uwubot");
+  client.user.setActivity("!uwuhelp\nhttps://github.com/MalHT/uwubot");
 
 });
 
