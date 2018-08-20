@@ -5,12 +5,16 @@
 let botConfig = require("../config.json");
 let Flickr = require("flickrapi");
 
+if (!("animals" in botConfig.moduleConfig)) {
+  console.warn("No Flickr config found. Skipping Animals module.");
+  return;
+}
+
 let help = "**Animals**\n";
 help += "Gets important pictures of important animals.\n";
 help += "*!shoob*, *!pangolin*, *!corgi*, *!duck*, *!goose*, *!seal*, *!opossum*, *!bun*, *!capy*, *!axolotl*, *!fennec*, *!tardi*, *!shibe*, *!cat* (finally).\n";
 
 //** Set up Flickr api
-
 let flickrOptions = {
   api_key: botConfig.moduleConfig.animals.flickrApikey,
   secret: botConfig.moduleConfig.animals.flickrSecretkey

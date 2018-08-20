@@ -4,8 +4,6 @@
  * To add new mangling modes, add a new object to the charsets array.
  * Make sure the order of characters in the alpha/numeric/punctuation arrays is the same as in the reference arrays
  * Characters in new mangling modes that aren't supported should be "skipped" by making them empty strings
- *
- * TODO: Implement initialization method that makes sure no charset aliases are defined twice
  */
 
 let help = "**Unicode**\n";
@@ -241,6 +239,19 @@ let charsets = [
 		]
 	}
 ];
+
+var testAliases = [];
+for (var i = 0; i < charsets.length; i++) {
+	let cs = charsets[i];
+	for (var ai = 0; ai < cs.aliases.length; ai++) {
+		let alias = cs.aliases[ai];
+		if (testAliases.includes(alias)) {
+			console.warn(`Alias "${alias}" is defined multiple times. Skipping Unicode module.`)
+			return;
+		}
+		testAliases.push(alias);
+	}
+}
 
 //** Command handlers
 

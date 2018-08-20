@@ -56,7 +56,10 @@ client.on('ready', () => {
 
   // Print server connection status
 
-  console.log("Connected to " + client.guilds.size + " server(s).");
+  if (client.guilds.size === 1)
+    console.log(`Connected to ${client.guilds.size} server.`);
+  else
+    console.log(`Connected to ${client.guilds.size} servers.`);
 
   // Set game status
 
