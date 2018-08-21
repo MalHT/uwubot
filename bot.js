@@ -44,7 +44,10 @@ client.on('ready', () => {
 
   // Print startup console header
 
-  console.log('uwu');
+  console.log(String.raw `  __  ___      ____  ____        __ `);
+  console.log(String.raw ` / / / / | /| / / / / / /  ___  / /_`);
+  console.log(String.raw `/ /_/ /| |/ |/ / /_/ / _ \/ _ \/ __/`);
+  console.log(String.raw `\____/ |__/|__/\____/____/\___/\__/ `);
 
   // Create or update configuration files for each server the bot is present in.
 
