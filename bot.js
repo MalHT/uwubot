@@ -7,12 +7,12 @@ const serverConfig = require('./server_config.js');
 
 let modules = {};
 
-modules.emojitext = require('./bot_modules/emojitext.js');
 modules.unicode = require('./bot_modules/unicode.js');
 modules.autoroles = require('./bot_modules/autoroles.js');
 modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');
 modules.rationals = require('./bot_modules/rationals.js');
+modules.imagetext = require('./bot_modules/imagetext.js');
 
 let help = "**uwubot** version whatever\n";
 help += "\n";
@@ -48,6 +48,7 @@ client.on('ready', () => {
   console.log(String.raw ` / / / / | /| / / / / / /  ___  / /_`);
   console.log(String.raw `/ /_/ /| |/ |/ / /_/ / _ \/ _ \/ __/`);
   console.log(String.raw `\____/ |__/|__/\____/____/\___/\__/ `);
+  console.log();
 
   // Create or update configuration files for each server the bot is present in.
 

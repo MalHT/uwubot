@@ -4,8 +4,10 @@
   "description": "A meme bot for spenglers",
   "main": "bot.js",
   "dependencies": {
+    "cross-spawn": "^6.0.5",
     "discord.js": "^11.0.0",
-    "flickrapi": "^0.6.0"
+    "flickrapi": "^0.6.0",
+    "tmp": "0.0.33"
   },
   "devDependencies": {},
   "scripts": {
