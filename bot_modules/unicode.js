@@ -11,7 +11,7 @@ help += "Converts given text into emoji characters.\n";
 help += "*!ri <message>* - prints <message> using emoji characters.\n";
 help += "*!clap <message>* - replaces:clap:spaces:clap:with:clap:clap:clap:emoji.\n";
 
-const avoidFlags = false;
+const avoidFlags = true;
 
 const reDigits = /^\d+$/;
 const reAlpha = /^([a-zA-z])+$/;

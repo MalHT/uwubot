@@ -31,6 +31,7 @@ const images = {
 		size: "1159x",
 		offset: "0",
 		pointSize: "56",
+		emojiPointSize: "150",
 		align: "center",
 		bgColor: "white",
 		fgColor: "black"
@@ -41,6 +42,7 @@ const images = {
 		size: "222x179",
 		offset: "+147+114",
 		pointSize: "40",
+		emojiPointSize: "120",
 		align: "center",
 		bgColor: "white",
 		fgColor: "black"
@@ -51,6 +53,7 @@ const images = {
 		size: "300x93",
 		offset: "+376+505",
 		pointSize: "32",
+		emojiPointSize: "84",
 		align: "west",
 		bgColor: "white",
 		fgColor: "black"
@@ -61,6 +64,7 @@ const images = {
 		size: "1710x564",
 		offset: "+276+234",
 		pointSize: "90",
+		emojiPointSize: "250",
 		align: "west",
 		bgColor: "transparent",
 		fgColor: "#232323"
@@ -112,15 +116,15 @@ function sendImage(text, imgMeta, channel) {
 	let tmpDir     = "bot_modules/imagetext/tmp/";
 	let template   = `bot_modules/imagetext/${imgMeta.template}` ;
 	let font       = `bot_modules/imagetext/fonts/${imgMeta.font}`;
+	let emojiFont  = "bot_modules/imagetext/fonts/NotoEmoji-Regular.ttf";
 	let pointSize  = imgMeta.pointSize;
+	let emojiSize  = imgMeta.emojiPointSize;
 	let size       = imgMeta.size;
 	let offset     = imgMeta.offset;
 	let align      = imgMeta.align;
 	let background = imgMeta.bgColor;
 	let fill       = imgMeta.fgColor;
 
-	let emojiFont  = "bot_modules/imagetext/fonts/NotoEmoji-Regular.ttf";
-	let emojiSize  = Math.round(pointSize * 2.65); // dunno if imagemagick does floats. rounding first.
 
 	// generate random filename in the tmp/ directory
 	var tempFile = tmp.fileSync({ dir: tmpDir });
@@ -157,7 +161,7 @@ function sendImage(text, imgMeta, channel) {
 
 		channel.send("", attachment)
 		.then(message => {
-			console.log("Message sent!");
+			console.log("Image macro sent!");
 
 			// delete the temp file
 			tempFile.removeCallback();
