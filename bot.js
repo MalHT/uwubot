@@ -14,7 +14,9 @@ modules.copypasta = require('./bot_modules/copypasta.js');
 modules.rationals = require('./bot_modules/rationals.js');
 modules.imagetext = require('./bot_modules/imagetext.js');
 
-let help = "**uwubot** version whatever\n";
+const { version } = require("./package.json");
+
+let help = `**uwubot** version ${version}\n`;
 help += "\n";
 
 let commandHandlers = {};

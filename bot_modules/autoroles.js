@@ -178,3 +178,6 @@ module.exports = {
   "help": help,
   "commandHandlers": commandHandlers
 };
+
+let scriptName = __filename.split(/[\\/]/).pop().split(".").shift();
+console.info(`${scriptName} module loaded.`);

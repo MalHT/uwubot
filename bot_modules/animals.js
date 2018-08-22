@@ -6,7 +6,7 @@ let botConfig = require("../config.json");
 let Flickr = require("flickrapi");
 
 if (!("animals" in botConfig.moduleConfig)) {
-  console.warn("No Flickr config found. Skipping Animals module.");
+  console.warn("Not loading Animals module: No Flickr config found.");
   return;
 }
 
@@ -296,3 +296,6 @@ module.exports = {
   "help": help,
   "commandHandlers": commandHandlers
 };
+
+let scriptName = __filename.split(/[\\/]/).pop().split(".").shift();
+console.info(`${scriptName} module loaded.`);

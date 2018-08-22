@@ -67,6 +67,8 @@ const images = {
 	}
 };
 
+let emojiList = JSON.parse(fs.readFileSync("bot_modules/imagetext/discord_emoji.json", "utf8"));
+
 //** Command handlers
 
 let commandHandlers = {};
@@ -117,8 +119,16 @@ function sendImage(text, imgMeta, channel) {
 	let background = imgMeta.bgColor;
 	let fill       = imgMeta.fgColor;
 
+	let emojiFont  = "bot_modules/imagetext/fonts/NotoEmoji-Regular.ttf";
+	let emojiSize  = Math.round(pointSize * 2.65); // dunno if imagemagick does floats. rounding first.
+
 	// generate random filename in the tmp/ directory
 	var tempFile = tmp.fileSync({ dir: tmpDir });
+
+	if (text.length < 16 && emojiList.includes(text)) {
+		font = emojiFont;
+		pointSize = emojiSize;
+	}
 
 	try {
 		let imCmd = "convert";
@@ -168,3 +178,6 @@ module.exports = {
 	"help": help,
 	"commandHandlers": commandHandlers
 };
+
+let scriptName = __filename.split(/[\\/]/).pop().split(".").shift();
+console.info(`${scriptName} module loaded.`);
