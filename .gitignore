@@ -55,3 +55,6 @@ data
 
 # Hide macOS-specific garbage files
 .DS_Store
+
+# Hide Helvetica
+Helvetica*.ttf
