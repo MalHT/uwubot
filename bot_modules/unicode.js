@@ -12,6 +12,7 @@ let help = "**Unicode**\n";
 help += "Converts given text into emoji characters.\n";
 help += "*!ri <message>* - prints <message> using emoji characters.\n";
 help += "*!clap <message>* - replaces:clap:spaces:clap:with:clap:clap:clap:emoji.\n";
+help += "*!sheriff <message>* - howdy. im the sheriff of <message>. (requires an emoji)\n";
 
 const avoidFlags = true;
 
@@ -92,43 +93,6 @@ commandHandlers.clap = function (message, args) {
 	messageContent = messageContent.replace(/\s+/g, ":clap:");
 
 	message.channel.send(messageContent);
-}
-
-commandHandlers.cowboy = function (message, args) {
-	let cowboyTemplate = "\u3000\u2006\u2006\u2006\u2006FACE\nRIGHTHAND:shirt:LEFTHAND\n\u3000\u2000:jeans:\n\u3000:boot::boot:";
-	let rightHands = [":raised_hand:", ":point_left:", ":point_up_2:", ":point_down:", ":point_up:", ":fingers_crossed:", ":vulcan:", ":v:"];
-	let leftHands  = [":raised_back_of_hand:", ":point_right:", ":point_up_2:", ":point_down:", ":point_up:", ":fingers_crossed:", ":vulcan:", ":v:", ":call_me:"];
-
-	let rightHand = rightHands[Math.floor(Math.random() * rightHands.length)];
-	let leftHand  = leftHands[Math.floor(Math.random() * leftHands.length)];
-
-	serverEmojiList = message.channel.guild.emojis.array().filter(e => {
-		return !e.deleted;
-	});
-
-	let messageContent = args.trim();
-	if (messageContent === "") {
-		// the message is empty, just use the cowboy face here
-		cowboyTemplate = cowboyTemplate.replace("FACE", ":cowboy:");
-		cowboyTemplate = cowboyTemplate.replace("RIGHTHAND", rightHand);
-		cowboyTemplate = cowboyTemplate.replace("LEFTHAND", leftHand);
-		message.channel.send(cowboyTemplate);
-		return;
-	}
-
-	let isStandardEmoji = emojiList.includes(messageContent);
-	let isServerEmoji   = typeof serverEmojiList.find(e => {
-		return `<:${e.name}:${e.id}>` == messageContent;
-	}) !== "undefined";
-
-	if (messageContent.length < 64 && (isStandardEmoji || isServerEmoji)) {
-		cowboyTemplate = cowboyTemplate.replace("FACE", messageContent);
-		cowboyTemplate = cowboyTemplate.replace("RIGHTHAND", rightHand);
-		cowboyTemplate = cowboyTemplate.replace("LEFTHAND", leftHand);
-		message.channel.send(cowboyTemplate);
-	} else {
-		message.channel.send("I don't know this emoji.");
-	}
 }
 
 commandHandlers.sheriff = function (message, args) {
