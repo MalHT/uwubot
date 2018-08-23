@@ -6,6 +6,8 @@
  * Characters in new mangling modes that aren't supported should be "skipped" by making them empty strings
  */
 
+const fs = require("fs");
+
 let help = "**Unicode**\n";
 help += "Converts given text into emoji characters.\n";
 help += "*!ri <message>* - prints <message> using emoji characters.\n";
@@ -16,6 +18,9 @@ const avoidFlags = true;
 const reDigits = /^\d+$/;
 const reAlpha = /^([a-zA-z])+$/;
 const rePunc = /[!\"#\$%&'\(\)\*\+\-\.\/:;<=>\?@\[\\\]\^_`{\|}~]/;
+
+let emojiList = JSON.parse(fs.readFileSync("bot_modules/imagetext/discord_emoji.json", "utf8"));
+let serverEmojiList = [];
 
 const reference = {
 	"alpha": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
@@ -78,7 +83,7 @@ commandHandlers.ri = function (message, args) {;
 };
 
 commandHandlers.clap = function (message, args) {
-	var messageContent = args;
+	let messageContent = args;
 
 	// append a zero-width space to all @s to avoid bot pings
 	messageContent = messageContent.replace(/@/g, "@\u200B");
@@ -87,6 +92,64 @@ commandHandlers.clap = function (message, args) {
 	messageContent = messageContent.replace(/\s+/g, ":clap:");
 
 	message.channel.send(messageContent);
+}
+
+commandHandlers.cowboy = function (message, args) {
+	let cowboyTemplate = "\u3000\u2006\u2006\u2006\u2006FACE\nRIGHTHAND:shirt:LEFTHAND\n\u3000\u2000:jeans:\n\u3000:boot::boot:";
+	let rightHands = [":raised_hand:", ":point_left:", ":point_up_2:", ":point_down:", ":point_up:", ":fingers_crossed:", ":vulcan:", ":v:"];
+	let leftHands  = [":raised_back_of_hand:", ":point_right:", ":point_up_2:", ":point_down:", ":point_up:", ":fingers_crossed:", ":vulcan:", ":v:", ":call_me:"];
+
+	let rightHand = rightHands[Math.floor(Math.random() * rightHands.length)];
+	let leftHand  = leftHands[Math.floor(Math.random() * leftHands.length)];
+
+	serverEmojiList = message.channel.guild.emojis.array().filter(e => {
+		return !e.deleted;
+	});
+
+	let messageContent = args.trim();
+	if (messageContent === "") {
+		// the message is empty, just use the cowboy face here
+		cowboyTemplate = cowboyTemplate.replace("FACE", ":cowboy:");
+		cowboyTemplate = cowboyTemplate.replace("RIGHTHAND", rightHand);
+		cowboyTemplate = cowboyTemplate.replace("LEFTHAND", leftHand);
+		message.channel.send(cowboyTemplate);
+		return;
+	}
+
+	let isStandardEmoji = emojiList.includes(messageContent);
+	let isServerEmoji   = typeof serverEmojiList.find(e => {
+		return `<:${e.name}:${e.id}>` == messageContent;
+	}) !== "undefined";
+
+	if (messageContent.length < 64 && (isStandardEmoji || isServerEmoji)) {
+		cowboyTemplate = cowboyTemplate.replace("FACE", messageContent);
+		cowboyTemplate = cowboyTemplate.replace("RIGHTHAND", rightHand);
+		cowboyTemplate = cowboyTemplate.replace("LEFTHAND", leftHand);
+		message.channel.send(cowboyTemplate);
+	} else {
+		message.channel.send("I don't know this emoji.");
+	}
+}
+
+commandHandlers.sheriff = function (message, args) {
+	let sheriffTemplate = "⠀⠀          🤠\n　　💯💯💯\n　💯 　💯　💯\n👇　  💯💯　👇\n　　💯　  💯\n　　💯　　💯\n　　 👢　　👢 ";
+
+	serverEmojiList = message.channel.guild.emojis.array().filter(e => {
+		return !e.deleted;
+	});
+
+	let messageContent = args.trim();
+	let isStandardEmoji = emojiList.includes(messageContent);
+	let isServerEmoji   = typeof serverEmojiList.find(e => {
+		return `<:${e.name}:${e.id}>` == messageContent;
+	}) !== "undefined";
+
+	if (messageContent.length < 64 && (isStandardEmoji || isServerEmoji)) {
+		sheriffTemplate = sheriffTemplate.replace(/💯/g, messageContent)
+		message.channel.send(sheriffTemplate);
+	} else {
+		message.channel.send("I don't know this emoji.");
+	}
 }
 
 //** Functions for unicode command
