@@ -68,6 +68,18 @@ const images = {
 		align: "west",
 		bgColor: "transparent",
 		fgColor: "#232323"
+	},
+	pa: {
+		// Presidential Alert template, follows many of the same rules as the dril one.
+		template: "pa",
+		font: "SF-Pro-Text-Regular.otf",
+		size: "1030x",
+		offset: "0",
+		pointSize: "32",
+		emojiPointSize: "32",
+		align: "center",
+		bgColor: "rgb(254,254,254)",
+		fgColor: "rgb(50,50,50)"
 	}
 };
 
@@ -138,12 +150,18 @@ function sendImage(text, imgMeta, channel) {
 		let imCmd = "convert";
 		let imArgs = [template, "-background", background, "-fill", fill, "-font", font, "-pointsize", pointSize, "-gravity", align, "-size", size, `caption:${text}`, "-geometry", offset, "-gravity", "northwest", "-composite", tempFile.name]
 
-		// if this is the dril template, use different imagemagick arguments
+		// if this is the dril or pa template, use different imagemagick arguments
 		if (imgMeta.template === "dril") {
 			let templateTop    = "bot_modules/imagetext/dril_top.png";
 			let templateBottom = "bot_modules/imagetext/dril_bottom.png";
 			imArgs = [templateTop, "-background", background, "-fill", fill, "-font", font, "-pointsize", pointSize, "-size", size, `caption:${text}`, "-gravity", align, templateBottom, "-append", tempFile.name];
+		} else if (imgMeta.template === "pa") {
+			let templateTop    = "bot_modules/imagetext/pa_top.png";
+			let templateBottom = "bot_modules/imagetext/pa_bottom.png";
+			imArgs = [templateTop, "-background", background, "-fill", fill, "-font", font, "-kerning", "-0.3", "-interline-spacing", "2", "-pointsize", pointSize, "-size", size, `caption:${text}`, "-gravity", align, templateBottom, "-append", tempFile.name];
 		}
+
+		console.log(imCmd, imArgs.join(" "));
 
 		// execute imagemagick with the given arguments and get the result
 		let result = spawn.sync(imCmd, imArgs);
