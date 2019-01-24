@@ -137,7 +137,10 @@ function sendImage(text, imgMeta, channel) {
 	let background = imgMeta.bgColor;
 	let fill       = imgMeta.fgColor;
 
-
+	if (!fs.existsSync(tmpDir)) {
+		fs.mkdirSync(tmpDir);
+	}
+	
 	// generate random filename in the tmp/ directory
 	var tempFile = tmp.fileSync({ dir: tmpDir });
 
