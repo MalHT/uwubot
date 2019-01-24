@@ -96,7 +96,7 @@ commandHandlers.clap = function (message, args) {
 }
 
 commandHandlers.sheriff = function (message, args) {
-	let sheriffTemplate = "⠀⠀          🤠\n　　💯💯💯\n　💯 　💯　💯\n👇　  💯💯　👇\n　　💯　  💯\n　　💯　　💯\n　　 👢　　👢 ";
+	let sheriffTemplate = "﻿                   🤠\n　　💯💯💯\n　💯 　💯　💯\n👇　  💯💯　👇\n　　💯　  💯\n　　💯　　💯\n　　 👢　　👢 ";
 
 	serverEmojiList = message.channel.guild.emojis.array().filter(e => {
 		return !e.deleted;
@@ -134,7 +134,6 @@ function mangleText(mode, text) {
 	for (var i = 0; i < charsets.length; i++) {
 		let cs = charsets[i];
 		let charsetName = cs.name.replace(/\s/g, "").toLowerCase();
-
 
 		for (var j = 0; j < cs.variants.length; j++) {
 			let variant = cs.variants[j];
