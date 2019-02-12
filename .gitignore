@@ -56,5 +56,9 @@ data
 # Hide macOS-specific garbage files
 .DS_Store
 
-# Hide Helvetica
+# Hide non-free fonts
 Helvetica*.ttf
+SF-*.otf
+
+# Hide temp dir
+bot_modules/imagetext/tmp
