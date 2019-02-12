@@ -1,5 +1,5 @@
 /**
- * COPYPASTA - Sends only the best and most rational copypastas
+ * DERAIL - In case of excessively intense conversation, posts a random Neil Cicierega song
  */
 
 let botConfig = require("../config.json");
@@ -22,8 +22,8 @@ message.channel.sendMessage(choose);
 
 //** Module Exports
 module.exports = {
-  "help": help,
-  "commandHandlers": commandHandlers
+	"help": help,
+	"commandHandlers": commandHandlers
 };
 
 let scriptName = __filename.split(/[\\/]/).pop().split(".").shift();

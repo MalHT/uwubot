@@ -10,6 +10,8 @@ modules.animals = require('./bot_modules/animals.js');
 modules.copypasta = require('./bot_modules/copypasta.js');
 modules.rationals = require('./bot_modules/rationals.js');
 modules.imagetext = require('./bot_modules/imagetext.js');
+modules.derail = require('./bot_modules/derail.js');
+modules.owo = require('./bot_modules/owo.js');
 
 const { version } = require("./package.json");
 
