@@ -10,100 +10,63 @@ help += "Sends only the best and most rational copypastas.\n";
 help += "*!pasta*, *!listpastas*.\n";
 
 //** Command handlers
-
 let commandHandlers = {};
 
 commandHandlers.pasta = function (message, args) {
+	if (!message.guild) {
+		message.channel.send("This command must be run in a server.");
+		return false;
+	}
 
-  if (!message.guild) {
-
-    message.channel.send("This command must be run in a server.");
-
-    return false;
-
-  }
-
-  getPastas(message.guild.id, function (pastas) {
-
-    if (Object.keys(pastas).indexOf(args) !== -1) {
-
-      let pasta = pastas[args];
-
-      message.channel.send(pasta);
-      
-    } else {
-
-      message.channel.send("Couldn't find that pasta!");
-
-    };
-    
-  });
-
+	getPastas(message.guild.id, function (pastas) {
+		if (Object.keys(pastas).indexOf(args) !== -1) {
+			let pasta = pastas[args];
+			message.channel.send(pasta);
+		} else {
+			message.channel.send("Couldn't find that pasta!");
+		};
+	});
 };
 
 commandHandlers.listpastas = function (message, args) {
+	if (!message.guild) {
+		message.channel.send("This command must be run in a server.")
+		return false;
+	}
 
-  if (!message.guild) {
+	getPastas(message.guild.id, function (pastas) {
+		if (typeof pastas === "object" && Object.keys(pastas).length > 0) {
+			pastaMessage = "Pastas:\n";
 
-    message.channel.send("This command must be run in a server.")
+			Object.keys(pastas).forEach(function (element, index) {
+				pastaMessage += element;
+				if (index < Object.keys(pastas).length - 1) {
+					pastaMessage+= ", ";
+				}
+			});
 
-    return false;
-
-  }
-
-  getPastas(message.guild.id, function (pastas) {
-
-    if (typeof pastas === "object" && Object.keys(pastas).length > 0) {
-
-      pastaMessage = "Pastas:\n";
-
-      Object.keys(pastas).forEach(function (element, index) {
-  
-        pastaMessage += element;
-  
-        if (index < Object.keys(pastas).length - 1) {
-  
-          pastaMessage+= ", ";
-  
-        }
-  
-      });
-      
-      message.channel.send(pastaMessage + "```");
-      
-    } else {
-      
-      message.channel.send("There aren't any copypastas configured for this server. Sorry :(");
-      
-    }
-
-  });
-
+			message.channel.send(pastaMessage + "```");
+		} else {
+			message.channel.send("There aren't any copypastas configured for this server. Sorry :(");
+		}
+	});
 };
 
 let getPastas = function (guildId, callback) {
-
-  serverConfig.getServerConfig(guildId, function (config) {
-
-    if (config.moduleConfig && config.moduleConfig.copypasta && config.moduleConfig.copypasta.pastas) {
-
-      callback(config.moduleConfig.copypasta.pastas);
-
-    } else {
-
-      callback([]);
-      
-    }
-
-  });
-
+	serverConfig.getServerConfig(guildId, function (config) {
+		if (config.moduleConfig && config.moduleConfig.copypasta && config.moduleConfig.copypasta.pastas) {
+			callback(config.moduleConfig.copypasta.pastas);
+		} else {
+			callback([]);
+		}
+	});
 };
 
 //** Module Exports
 
 module.exports = {
-  "help": help,
-  "commandHandlers": commandHandlers
+	"help": help,
+	"commandHandlers": commandHandlers
 };
 
 let scriptName = __filename.split(/[\\/]/).pop().split(".").shift();

@@ -182,7 +182,7 @@ function mangleText(mode, text) {
 
 		newStr += newChar;
 	}
-		
+
 	return newStr;
 };
 
