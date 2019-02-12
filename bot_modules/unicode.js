@@ -20,7 +20,7 @@ const reDigits = /^\d+$/;
 const reAlpha = /^([a-zA-z])+$/;
 const rePunc = /[!\"#\$%&'\(\)\*\+\-\.\/:;<=>\?@\[\\\]\^_`{\|}~]/;
 
-let emojiList = JSON.parse(fs.readFileSync("bot_modules/imagetext/discord_emoji.json", "utf8"));
+let emojiList = require("./imagetext/discord_emoji.json");
 let serverEmojiList = [];
 
 const reference = {

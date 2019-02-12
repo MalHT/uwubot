@@ -73,18 +73,22 @@ client.on('message', message => {
 				commandArgs = commandArgs.substr(1);
 			}
 
+			// Prioritize uwuhelp
+			if (commandText === "uwuhelp") {
+				message.channel.send(help);
+				return;
+			}
+
 			//** Pass commands onwards
 			for (let commandHandlerName in commandHandlers) {
 				if (commandText === commandHandlerName) {
 					commandHandlers[commandHandlerName](message, commandArgs);
 				}
 			}
-
-			if (commandText === "uwuhelp") {
-				message.channel.send(help);
-			}
 		}
 	};
 });
+
+client.on('error', console.error);
 
 client.login(botConfig.apikey);

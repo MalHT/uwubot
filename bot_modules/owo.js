@@ -35,8 +35,8 @@ commandHandlers.owo = function (message, args) {
 
 //** Module Exports
 module.exports = {
-  "help": help,
-  "commandHandlers": commandHandlers
+	"help": help,
+	"commandHandlers": commandHandlers
 };
 
 let scriptName = __filename.split(/[\\/]/).pop().split(".").shift();

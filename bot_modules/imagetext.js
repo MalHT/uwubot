@@ -83,7 +83,7 @@ const images = {
 	}
 };
 
-let emojiList = JSON.parse(fs.readFileSync("bot_modules/imagetext/discord_emoji.json", "utf8"));
+let emojiList = require("./imagetext/discord_emoji.json");
 
 //** Command handlers
 
@@ -91,9 +91,7 @@ let commandHandlers = {};
 
 // Lists the available images.
 commandHandlers.listimages = function (message, args) {
-
 	message.channel.send("Available images: `" + Object.keys(images).join(", ") + "`");
-
 };
 
 commandHandlers.im = function (message, args) {
@@ -140,7 +138,7 @@ function sendImage(text, imgMeta, channel) {
 	if (!fs.existsSync(tmpDir)) {
 		fs.mkdirSync(tmpDir);
 	}
-	
+
 	// generate random filename in the tmp/ directory
 	var tempFile = tmp.fileSync({ dir: tmpDir });
 
@@ -194,7 +192,7 @@ function sendImage(text, imgMeta, channel) {
 		// delete the temp file
 		tempFile.removeCallback();
 	}
-	
+
 }
 
 //** Module Exports
