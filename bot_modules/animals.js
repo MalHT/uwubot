@@ -2,179 +2,172 @@
  * ANIMALS - Gets important pictures of important animals
  */
 
-let botConfig = require("../config.json");
-let Flickr = require("flickrapi");
+const Flickr = require("flickrapi");
+const serverConfig = require("../server_config.js");
 
-if (!("animals" in botConfig.moduleConfig)) {
-	console.warn("Not loading Animals module: No Flickr config found.");
-	return;
-}
-
-let help = "**Animals**\n";
-help += "Gets important pictures of important animals.\n";
-help += "*!shoob*, *!pangolin*, *!corgi*, *!duck*, *!goose*, *!seal*, *!opossum*, *!bun*, *!capy*, *!axolotl*, *!fennec*, *!tardi*, *!shibe*, *!cat* (finally).\n";
-
-//** Set up Flickr api
-let flickrOptions = {
-	api_key: botConfig.moduleConfig.animals.flickrApikey,
-	secret: botConfig.moduleConfig.animals.flickrSecretkey
-};
+let helpStrings = [
+	"**Animals**",
+	"  *Gets important pictures of important animals*",
+	"  Usage:",
+	"    `!shoob`",
+	"    `!pangolin`",
+	"    `!corgi`",
+	"    `!duck`",
+	"    `!goose`",
+	"    `!seal`",
+	"    `!opossum`",
+	"    `!bun`",
+	"    `!capy`",
+	"    `!axolotl`",
+	"    `!fennec`",
+	"    `!tardi`",
+	"    `!shibe`",
+	"    `!cat`"
+];
+let help = helpStrings.join("\n");
 
 //** Command handlers
-
 let commandHandlers = {};
 
 commandHandlers.shoob = function(message, args) {
-	flickrRandomPhotoBySearch("samoyed", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
-};
-
-commandHandlers.pangolin = function(message, args) {
-	flickrRandomPhotoByGroup("974702@N22", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("samoyed", message);
 };
 
 commandHandlers.opossum = function(message, args) {
-	flickrRandomPhotoBySearch("opossums", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("opossums", message);
 };
 
 commandHandlers.bun = function(message, args) {
-	flickrRandomPhotoBySearch("bunny+rabbit", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("bunny+rabbit", message);
 };
 
 commandHandlers.corgi = function(message, args) {
-	flickrRandomPhotoBySearch("corgi+dog", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("corgi+dog", message);
 };
 
 commandHandlers.fennec = function(message, args) {
-	flickrRandomPhotoBySearch("fennec foxes", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("fennec foxes", message);
 };
 
 commandHandlers.capy = function(message, args) {
-	flickrRandomPhotoBySearch("capybara", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("capybara", message);
 };
 
 commandHandlers.axolotl = function(message, args) {
-	flickrRandomPhotoBySearch("axolotl", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("axolotl", message);
 };
 
 commandHandlers.tardi = function(message, args) {
-	flickrRandomPhotoBySearch("tardigrade water bear", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("tardigrade water bear", message);
 };
 
 commandHandlers.cat = function(message, args) {
-	flickrRandomPhotoBySearch("cat", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("cat", message);
 };
 
 commandHandlers.shibe = function(message, args) {
-	flickrRandomPhotoBySearch("shiba inu+dog", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("shiba inu+dog", message);
 };
 
 commandHandlers.duck = function(message, args) {
-	flickrRandomPhotoByGroup("16694458@N00", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("16694458@N00", message, true);
+};
+
+commandHandlers.pangolin = function(message, args) {
+	flickrHandler("974702@N22", message, true);
 };
 
 commandHandlers.seal = function(message, args) {
-	flickrRandomPhotoByGroup("18035618@N00", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
-		}
-	});
+	flickrHandler("18035618@N00", message, true);
 };
 
 commandHandlers.goose = function(message, args) {
+	flickrHandler("979023@N22", message, true);
+};
 
-	flickrRandomPhotoByGroup("979023@N22", function(picture) {
-		if (picture) {
-			message.channel.send(picture);
+function flickrHandler(term, message, group = false) {
+	let flickrOptions = {};
+	serverConfig.getServerConfig(message.guild.id).then(function(config) {
+		if (!("animals" in config.moduleConfig)) {
+			console.error("Malfunction in animals module: No Flickr config found.");
+			return; // this doesn't actually return from the function, just from this .then()
+		}
+
+		flickrOptions.api_key = config.moduleConfig.animals.flickrApikey;
+		flickrOptions.secret = config.moduleConfig.animals.flickrSecretkey;
+	})
+	.catch(function(error) {
+		console.error(error);
+		return;
+	});
+
+	if (Object.keys(flickrOptions).length === 0) {
+		// check if the flickrOptions object has been populated. if not, bail
+		return;
+	}
+
+	if (group) {
+		var result = flickrRandomPhotoByGroup(term, flickrOptions);
+	} else {
+		var result = flickrRandomPhotoBySearch(term, flickrOptions);
+	}
+
+	result.then(function(picture) {
+		message.channel.send(picture);
+	})
+	.catch(function(error) {
+		console.log(error);
+	});
+};
+
+function flickrRandomPhotoBySearch(term, flickrOptions) {
+	return new Promise(function(resolve, reject) {
+		try {
+			Flickr.tokenOnly(flickrOptions, function(error, flickr) {
+				flickr.photos.search({
+					text: term,
+					page: 1,
+					per_page: 120,
+					sort: "relevance"
+				}, function(err, result) {
+					if (err) {
+						reject(error);
+					} else {
+						let picture = randomProperty(result.photos.photo);
+						let pictureUrl = "https://farm" + picture.farm + ".staticflickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
+						resolve(pictureUrl);
+					}
+				});
+			});
+		} catch (err) {
+			reject(err);
 		}
 	});
 };
 
-let flickrRandomPhotoBySearch = function(term, callback) {
-	Flickr.tokenOnly(flickrOptions, function(error, flickr) {
-		flickr.photos.search({
-			text: term,
-			page: 1,
-			per_page: 120,
-			sort: "relevance"
-		}, function(err, result) {
-			if (err) {
-				console.log(error);
-				callback(false);
-			} else {
-				let picture = randomProperty(result.photos.photo);
-				let pictureUrl = "https://farm" + picture.farm + ".staticflickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
-				callback(pictureUrl);
-			}
-		});
+function flickrRandomPhotoByGroup(groupid, flickrOptions) {
+	return new Promise(function(resolve, reject) {
+		try {
+			Flickr.tokenOnly(flickrOptions, function(error, flickr) {
+				flickr.groups.pools.getPhotos({
+					group_id: groupid
+				}, function(err, result) {
+					if (err) {
+						reject(false);
+					} else {
+						let picture = randomProperty(result.photos.photo);
+						let pictureUrl = "https://farm" + picture.farm + ".staticflickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
+						resolve(pictureUrl);
+					}
+				});
+			});
+		} catch (err) {
+			reject(err);
+		}
 	});
 };
 
-let flickrRandomPhotoByGroup = function(groupid, callback) {
-	Flickr.tokenOnly(flickrOptions, function(error, flickr) {
-		flickr.groups.pools.getPhotos({
-			group_id: groupid
-		}, function(err, result) {
-			if (err) {
-				console.log(error);
-				callback(false);
-			} else {
-				let picture = randomProperty(result.photos.photo);
-				let pictureUrl = "https://farm" + picture.farm + ".staticflickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
-				callback(pictureUrl);
-			}
-		});
-	});
-};
-
-let randomProperty = function(obj) {
+function randomProperty(obj) {
 	let keys = Object.keys(obj)
 	return obj[keys[keys.length * Math.random() << 0]];
 };

@@ -3,85 +3,19 @@
  */
 
 const Discord = require("discord.js");
-const botConfig = require("../config.json");
 const serverConfig = require("../server_config.js");
 const fs = require("fs");
 const spawn = require("cross-spawn");
 const tmp = require("tmp");
 
-let help = "**Images With Text**\n";
-help += "Appropriately frames the take.\n";
-help += "*!listimages* - shows available images.\n";
-help += "*!im <image> <text>* - puts <text> on <image>.\n";
-
-// List of all available images
-// Images live in images/.
-// file is the image's filename.
-// size is the size of the text label.
-// size should be of the form "WxH".
-// offset is the position of the label's top left corner.
-// offset should be of the form "+X+Y".
-// TODO Consider reading this from a file or something instead of hardcoding it.
-// TODO Maybe make this per-server? I'm too bad to understand how !pasta does it.
-const images = {
-	dril: {
-		// the dril template is a bit more complicated than the other ones
-		template: "dril",
-		font: "HelveticaNeue-Regular.ttf",
-		size: "1159x",
-		offset: "0",
-		pointSize: "56",
-		emojiPointSize: "150",
-		align: "center",
-		bgColor: "white",
-		fgColor: "black"
-	},
-	jesus: {
-		template: "jesus.png",
-		font: "HelveticaNeue-Regular.ttf",
-		size: "222x179",
-		offset: "+147+114",
-		pointSize: "40",
-		emojiPointSize: "120",
-		align: "center",
-		bgColor: "white",
-		fgColor: "black"
-	},
-	google: {
-		template: "google.png",
-		font: "HelveticaNeue-Regular.ttf",
-		size: "300x93",
-		offset: "+376+505",
-		pointSize: "32",
-		emojiPointSize: "84",
-		align: "west",
-		bgColor: "white",
-		fgColor: "black"
-	},
-	verrit: {
-		template: "verrit.png",
-		font: "PTSansNarrow-Bold.ttf",
-		size: "1710x564",
-		offset: "+276+234",
-		pointSize: "90",
-		emojiPointSize: "250",
-		align: "west",
-		bgColor: "transparent",
-		fgColor: "#232323"
-	},
-	pa: {
-		// Presidential Alert template, follows many of the same rules as the dril one.
-		template: "pa",
-		font: "SF-Pro-Text-Regular.otf",
-		size: "1030x",
-		offset: "0",
-		pointSize: "32",
-		emojiPointSize: "32",
-		align: "center",
-		bgColor: "rgb(254,254,254)",
-		fgColor: "rgb(50,50,50)"
-	}
-};
+let helpStrings = [
+	"**Images With Text**",
+	"  *Appropriately frames the take*",
+	"  Usage:",
+	"    `!im` - Shows available images",
+	"    `!im <image> <text>` - Puts <text> on <image>"
+];
+let help = helpStrings.join("\n");
 
 let emojiList = require("./imagetext/discord_emoji.json");
 
@@ -89,37 +23,41 @@ let emojiList = require("./imagetext/discord_emoji.json");
 
 let commandHandlers = {};
 
-// Lists the available images.
-commandHandlers.listimages = function (message, args) {
-	message.channel.send("Available images: `" + Object.keys(images).join(", ") + "`");
-};
+commandHandlers.im = function(message, args) {
+	serverConfig.getServerConfig(message.guild.id).then(function(config) {
+		let images = config.moduleConfig.imagetext;
 
-commandHandlers.im = function (message, args) {
-	// Complain if we didn't get a command.
-	if (args === "") {
-		// TODO Make this message less unixy.
-		message.channel.send("Usage: !im <image> <text>");
-		return;
-	}
+		// Print image name list if we didn't get one
+		if (args === "") {
+			message.channel.send("Usage: `!im <image> <text>`");
+			message.channel.send("Available images: `" + Object.keys(images).join(", ") + "`");
+			return;
+		}
 
-	let words = args.split(" "); // Split the args into words.
-	let command = words.splice(0,1)[0].toLowerCase(); // Remove the first word.
-	let messageText = words.join(" ");
+		let words = args.split(" "); // Split the args into words.
+		let command = words.splice(0,1)[0].toLowerCase(); // Remove the first word.
+		let messageText = words.join(" ");
 
-	// use 200 as a reasonable default for maximum message length
-	if (messageText.length > 200) {
-		message.channel.send("That message is too long!");
-		return;
-	}
+		// use 200 as a reasonable default for maximum message length
+		if (messageText.length > 200) {
+			message.channel.send("That message is too long.");
+			return;
+		}
 
-	// Complain if we didn't get a valid command.
-	if (!(command in images)) {
-		message.channel.send("Couldn't find that image!");
-		return;
-	}
+		// Complain if we didn't get a valid image name
+		if (!(command in images)) {
+			message.channel.send("Couldn't find that image.");
+			return;
+		}
 
-	var imgMeta = images[command];
-	return sendImage(messageText, imgMeta, message.channel);
+		let imgMeta = images[command];
+		sendImage(messageText, imgMeta, message.channel);
+	})
+	.catch(function(error) {
+		message.channel.send("The config file for this server is broken!");
+		console.error("The config file for this server is broken!");
+		console.error(error);
+	});
 };
 
 function sendImage(text, imgMeta, channel) {
@@ -140,7 +78,7 @@ function sendImage(text, imgMeta, channel) {
 	}
 
 	// generate random filename in the tmp/ directory
-	var tempFile = tmp.fileSync({ dir: tmpDir });
+	let tempFile = tmp.fileSync({ dir: tmpDir });
 
 	if (text.length < 16 && emojiList.includes(text)) {
 		font = emojiFont;
@@ -162,7 +100,8 @@ function sendImage(text, imgMeta, channel) {
 			imArgs = [templateTop, "-background", background, "-fill", fill, "-font", font, "-kerning", "-0.3", "-interline-spacing", "2", "-pointsize", pointSize, "-size", size, `caption:${text}`, "-gravity", align, templateBottom, "-append", tempFile.name];
 		}
 
-		console.log(imCmd, imArgs.join(" "));
+		// print convert command for debugging
+		// console.log(imCmd, imArgs.join(" "));
 
 		// execute imagemagick with the given arguments and get the result
 		let result = spawn.sync(imCmd, imArgs);
@@ -176,7 +115,7 @@ function sendImage(text, imgMeta, channel) {
 			return false;
 		}
 
-		let attachment = new Discord.Attachment(tempFile.name, "dril.png");
+		let attachment = new Discord.Attachment(tempFile.name, `${imgMeta.template.split(".").shift()}.png`);
 
 		channel.send("", attachment)
 		.then(message => {
@@ -192,7 +131,6 @@ function sendImage(text, imgMeta, channel) {
 		// delete the temp file
 		tempFile.removeCallback();
 	}
-
 }
 
 //** Module Exports

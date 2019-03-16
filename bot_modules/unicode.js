@@ -8,11 +8,15 @@
 
 const fs = require("fs");
 
-let help = "**Unicode**\n";
-help += "Converts given text into emoji characters.\n";
-help += "*!ri <message>* - prints <message> using emoji characters.\n";
-help += "*!clap <message>* - replaces:clap:spaces:clap:with:clap:clap:clap:emoji.\n";
-help += "*!sheriff <message>* - howdy. im the sheriff of <message>. (requires an emoji)\n";
+let helpStrings = [
+	"**Unicode**",
+	"  *Converts given text into emoji characters*",
+	"  Usage:",
+	"    `!ri <message>` - prints <message> using emoji characters",
+	"    `!clap <message>` - replaces:clap:spaces:clap:with:clap:clap:clap:emoji",
+	"    `!sheriff <message>` - howdy. im the sheriff of <message> (message must be an emoji)"
+];
+let help = helpStrings.join("\n");
 
 const avoidFlags = true;
 
@@ -45,7 +49,7 @@ const charsets = [
 	}
 ];
 
-var testAliases = [];
+let testAliases = [];
 for (var i = 0; i < charsets.length; i++) {
 	let cs = charsets[i];
 	for (var ai = 0; ai < cs.aliases.length; ai++) {
@@ -62,7 +66,7 @@ for (var i = 0; i < charsets.length; i++) {
 
 let commandHandlers = {};
 
-commandHandlers.ri = function (message, args) {;
+commandHandlers.ri = function(message, args) {;
 	let messageContent = args;
 
 	if (messageContent === "") {
@@ -83,7 +87,7 @@ commandHandlers.ri = function (message, args) {;
 	message.channel.send(mangledText);
 };
 
-commandHandlers.clap = function (message, args) {
+commandHandlers.clap = function(message, args) {
 	let messageContent = args;
 
 	// append a zero-width space to all @s to avoid bot pings
@@ -95,7 +99,7 @@ commandHandlers.clap = function (message, args) {
 	message.channel.send(messageContent);
 }
 
-commandHandlers.sheriff = function (message, args) {
+commandHandlers.sheriff = function(message, args) {
 	let sheriffTemplate = "﻿                   🤠\n　　💯💯💯\n　💯 　💯　💯\n👇　  💯💯　👇\n　　💯　  💯\n　　💯　　💯\n　　 👢　　👢 ";
 
 	serverEmojiList = message.channel.guild.emojis.array().filter(e => {
@@ -122,7 +126,7 @@ function mangleText(mode, text) {
 	let modeSplit = mode.split("-");
 
 	let modeName = modeSplit[0].toLowerCase();
-	var modeVariant = "";
+	let modeVariant = "";
 	if (modeSplit.length > 1)
 		modeVariant = modeSplit[1].toLowerCase();
 
@@ -154,7 +158,7 @@ function mangleText(mode, text) {
 		return null;
 	}
 
-	var newStr = "";
+	let newStr = "";
 
 	for(var i = 0; i < text.length; i++) {
 		var c = text.charAt(i);
@@ -162,19 +166,19 @@ function mangleText(mode, text) {
 
 		if (reDigits.test(c)) {
 			if ("numeric" in selectedCharset) {
-				var idx = reference["numeric"].indexOf(c);
+				let idx = reference["numeric"].indexOf(c);
 				if (idx > -1 && idx in selectedCharset["numeric"] && selectedCharset["numeric"][idx] != "")
 					newChar = selectedCharset["numeric"][idx];
 			}
 		} else if (reAlpha.test(c)) {
 			if ("alpha" in selectedCharset) {
-				var idx = reference["alpha"].indexOf(c);
+				let idx = reference["alpha"].indexOf(c);
 				if (idx > -1 && idx in selectedCharset["alpha"] && selectedCharset["alpha"][idx] != "")
 					newChar = selectedCharset["alpha"][idx];
 			}
 		} else if (rePunc.test(c)) {
 			if ("punctuation" in selectedCharset) {
-				var idx = reference["punctuation"].indexOf(c);
+				let idx = reference["punctuation"].indexOf(c);
 				if (idx > -1 && idx in selectedCharset["punctuation"] && selectedCharset["punctuation"][idx] != "")
 					newChar = selectedCharset["punctuation"][idx];
 			}
