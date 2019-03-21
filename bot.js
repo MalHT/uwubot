@@ -162,7 +162,13 @@ client.on("message", async message => {
 	};
 });
 
-client.on("error", console.error);
+client.on("error", async error => {
+	if (error.code == "ECONNRESET") {
+		console.info("Connection reset");
+	} else {
+		console.error(error);
+	}
+});
 
 console.log("Logging in…");
 client.login(botConfig.apiKey);
