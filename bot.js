@@ -166,7 +166,7 @@ client.on("error", async error => {
 	if (error.code == "ECONNRESET") {
 		console.info("Connection reset");
 	} else {
-		console.error(error);
+		console.error(error.type, error.message);
 	}
 });
 

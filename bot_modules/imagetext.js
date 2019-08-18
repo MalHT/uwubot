@@ -39,7 +39,7 @@ commandHandlers.im = function(message, args) {
 		let messageText = words.join(" ");
 
 		// use 200 as a reasonable default for maximum message length
-		if (messageText.length > 200) {
+		if (messageText.length > 240) {
 			message.channel.send("That message is too long.");
 			return;
 		}
@@ -108,7 +108,7 @@ function sendImage(text, imgMeta, channel) {
 		if (result.status !== 0) {
 			// if the error code is not zero, something went wrong
 			console.error("Image couldn't be generated:");
-			console.error(result.output.toString("utf8"));
+			console.error("Output:", result);
 
 			// delete the temp file
 			tempFile.removeCallback();
