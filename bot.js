@@ -9,6 +9,17 @@ const serverConfig = require("./server_config.js");
 // Setup
 require("console-stamp")(console, "[dd.mm.yy HH:MM:ss.l]");
 
+/* PERMISSIONS 
+ * Integer: 322624
+ * View Channels
+ * Send Messages
+ * Manage Messages
+ * Embed Links
+ * Attach Files
+ * Use External Emojis
+ * Add Reactions
+ */
+
 var banner = String.raw `
   __  __       __  ____        __
  / / / /    __/ / / / /  ___  / /_
