@@ -62,3 +62,6 @@ SF-*.otf
 
 # Hide temp dir
 bot_modules/imagetext/tmp
+
+# flickr garbage
+data/
