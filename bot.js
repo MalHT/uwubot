@@ -96,12 +96,12 @@ function botStats() {
 }
 
 client.on("guildCreate", async guild => {
-	console.log(`${guild.name} (${guild.id}) joined`);
+	console.info(`New Server Joined: ${guild.name} (${guild.id})`);
 	serverConfig.initialiseServerConfig(guild);
 });
 
 client.on("guildDelete", async guild => {
-	console.log(`${guild.name} (${guild.id}) left`);
+	console.info(`Left Server: ${guild.name} (${guild.id})`);
 	serverConfig.deleteServerConfig(guild.id);
 });
 
