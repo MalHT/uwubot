@@ -1,6 +1,6 @@
 {
   "name": "uwubot",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A meme bot for spenglers",
   "main": "bot.js",
   "dependencies": {

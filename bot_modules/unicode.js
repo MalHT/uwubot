@@ -99,21 +99,27 @@ commandHandlers.clap = function(message, args) {
 
 commandHandlers.sheriff = function(message, args) {
 	let sheriffTemplate = "﻿                   🤠\n　　💯💯💯\n　💯 　💯　💯\n👇　  💯💯　👇\n　　💯　  💯\n　　💯　　💯\n　　 👢　　👢 ";
-	let serverEmojiRegex = /<:(.*?):(.*?)>/;
+	let serverEmojiRegex = /<(.*?):(.*?):(.*?)>/;
 
 	let messageContent = args.trim();
 	let standardEmoji  = onlyEmoji(messageContent);
 	let serverEmoji    = messageContent.match(serverEmojiRegex);
+	let backupEmoji    = message.guild.emojis.find(emoji => emoji.name == messageContent);
 
-	if (!(standardEmoji.length > 0 || serverEmoji)) {
-		message.channel.send("I don't know this emoji.");
-		return;
-	}
+	// console.debug(messageContent);
+	// console.debug(standardEmoji);
+	// console.debug(serverEmoji);
+	// console.debug(backupEmoji);
 
 	if (standardEmoji.length > 0) {
 		sheriffTemplate = sheriffTemplate.replace(/💯/g, standardEmoji[0]);
 	} else if (serverEmoji) {
 		sheriffTemplate = sheriffTemplate.replace(/💯/g, serverEmoji[0]);
+	} else if (backupEmoji) {
+		sheriffTemplate = sheriffTemplate.replace(/💯/g, backupEmoji);
+	} else {
+		message.channel.send("I don't know this emoji.");
+		return;
 	}
 
 	message.channel.send(sheriffTemplate);
