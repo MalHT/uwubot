@@ -7,6 +7,7 @@ const serverConfig = require("../server_config.js");
 const fs = require("fs");
 const spawn = require("cross-spawn");
 const tmp = require("tmp");
+const onlyEmoji = require("emoji-aware").onlyEmoji;
 
 let helpStrings = [
 	"**Images With Text**",
@@ -16,8 +17,6 @@ let helpStrings = [
 	"    `!im <image> <text>` - Puts <text> on <image>"
 ];
 let help = helpStrings.join("\n");
-
-let emojiList = require("./imagetext/discord_emoji.json");
 
 //** Command handlers
 
@@ -80,7 +79,9 @@ function sendImage(text, imgMeta, channel) {
 	// generate random filename in the tmp/ directory
 	let tempFile = tmp.fileSync({ dir: tmpDir });
 
-	if (text.length < 16 && emojiList.includes(text)) {
+	let emojiList = onlyEmoji(text);
+
+	if (emojiList.length > 0 && emojiList[0] == text) {
 		font = emojiFont;
 		pointSize = emojiSize;
 	}
@@ -101,14 +102,14 @@ function sendImage(text, imgMeta, channel) {
 		}
 
 		// print convert command for debugging
-		// console.log(imCmd, imArgs.join(" "));
+		// console.debug(imCmd, imArgs.join(" "));
 
 		// execute imagemagick with the given arguments and get the result
 		let result = spawn.sync(imCmd, imArgs);
 		if (result.status !== 0) {
 			// if the error code is not zero, something went wrong
 			console.error("Image couldn't be generated:");
-			console.error("Output:", result);
+			console.error("Output:", result.stderr.toString());
 
 			// delete the temp file
 			tempFile.removeCallback();

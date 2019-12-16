@@ -7,6 +7,7 @@
  */
 
 const fs = require("fs");
+const onlyEmoji = require("emoji-aware").onlyEmoji;
 
 let helpStrings = [
 	"**Unicode**",
@@ -23,9 +24,6 @@ const avoidFlags = true;
 const reDigits = /^\d+$/;
 const reAlpha = /^([a-zA-z])+$/;
 const rePunc = /[!\"#\$%&'\(\)\*\+\-\.\/:;<=>\?@\[\\\]\^_`{\|}~]/;
-
-let emojiList = require("./imagetext/discord_emoji.json");
-let serverEmojiList = [];
 
 const reference = {
 	"alpha": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
@@ -101,23 +99,24 @@ commandHandlers.clap = function(message, args) {
 
 commandHandlers.sheriff = function(message, args) {
 	let sheriffTemplate = "﻿                   🤠\n　　💯💯💯\n　💯 　💯　💯\n👇　  💯💯　👇\n　　💯　  💯\n　　💯　　💯\n　　 👢　　👢 ";
-
-	serverEmojiList = message.channel.guild.emojis.array().filter(e => {
-		return !e.deleted;
-	});
+	let serverEmojiRegex = /<:(.*?):(.*?)>/;
 
 	let messageContent = args.trim();
-	let isStandardEmoji = emojiList.includes(messageContent);
-	let isServerEmoji   = typeof serverEmojiList.find(e => {
-		return `<:${e.name}:${e.id}>` == messageContent;
-	}) !== "undefined";
+	let standardEmoji  = onlyEmoji(messageContent);
+	let serverEmoji    = messageContent.match(serverEmojiRegex);
 
-	if (messageContent.length < 64 && (isStandardEmoji || isServerEmoji)) {
-		sheriffTemplate = sheriffTemplate.replace(/💯/g, messageContent)
-		message.channel.send(sheriffTemplate);
-	} else {
+	if (!(standardEmoji.length > 0 || serverEmoji)) {
 		message.channel.send("I don't know this emoji.");
+		return;
 	}
+
+	if (standardEmoji.length > 0) {
+		sheriffTemplate = sheriffTemplate.replace(/💯/g, standardEmoji[0]);
+	} else if (serverEmoji) {
+		sheriffTemplate = sheriffTemplate.replace(/💯/g, serverEmoji[0]);
+	}
+
+	message.channel.send(sheriffTemplate);
 }
 
 //** Functions for unicode command
