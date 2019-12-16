@@ -103,22 +103,25 @@ commandHandlers.sheriff = function(message, args) {
 
 	let messageContent = args.trim();
 	let standardEmoji  = onlyEmoji(messageContent);
-	let serverEmoji    = messageContent.match(serverEmojiRegex);
-	let backupEmoji    = message.guild.emojis.find(emoji => emoji.name == messageContent);
+	let sem            = messageContent.match(serverEmojiRegex);
+	let serverEmoji;
+	if (sem)
+		serverEmoji = message.client.emojis.find(emoji => emoji.name == sem[2] && emoji.id == sem[3]);
+	let backupEmoji    = message.client.emojis.find(emoji => emoji.name == messageContent);
 
-	// console.debug(messageContent);
+	console.log("Sheriff:", messageContent);
 	// console.debug(standardEmoji);
-	// console.debug(serverEmoji);
+	// console.debug(sem);
 	// console.debug(backupEmoji);
 
 	if (standardEmoji.length > 0) {
 		sheriffTemplate = sheriffTemplate.replace(/💯/g, standardEmoji[0]);
 	} else if (serverEmoji) {
-		sheriffTemplate = sheriffTemplate.replace(/💯/g, serverEmoji[0]);
+		sheriffTemplate = sheriffTemplate.replace(/💯/g, serverEmoji);
 	} else if (backupEmoji) {
 		sheriffTemplate = sheriffTemplate.replace(/💯/g, backupEmoji);
 	} else {
-		message.channel.send("I don't know this emoji.");
+		message.channel.send("I don't know this emoji. If this is a server emoji, consider adding me to the server it came from! <3");
 		return;
 	}
 
