@@ -15,7 +15,8 @@ let helpStrings = [
 	"  Usage:",
 	"    `!ri <message>` - prints <message> using emoji characters",
 	"    `!clap <message>` - replaces:clap:spaces:clap:with:clap:clap:clap:emoji",
-	"    `!sheriff <message>` - howdy. im the sheriff of <message> (message must be an emoji)"
+	"    `!sheriff <message>` - howdy. im the sheriff of <message> (message must be an emoji)",
+	"    `!emoji <emoji name>` - looks up an emoji by name and posts it"
 ];
 let help = helpStrings.join("\n");
 
@@ -109,7 +110,6 @@ commandHandlers.sheriff = function(message, args) {
 		serverEmoji = message.client.emojis.find(emoji => emoji.name == sem[2] && emoji.id == sem[3]);
 	let backupEmoji    = message.client.emojis.find(emoji => emoji.name == messageContent);
 
-	console.log("Sheriff:", messageContent);
 	// console.debug(standardEmoji);
 	// console.debug(sem);
 	// console.debug(backupEmoji);
@@ -121,11 +121,32 @@ commandHandlers.sheriff = function(message, args) {
 	} else if (backupEmoji) {
 		sheriffTemplate = sheriffTemplate.replace(/💯/g, backupEmoji);
 	} else {
+		console.log("Sheriff:", messageContent, "failed");
 		message.channel.send("I don't know this emoji. If this is a server emoji, consider adding me to the server it came from! <3");
 		return;
 	}
 
+	console.log("Sheriff:", messageContent);
 	message.channel.send(sheriffTemplate);
+}
+
+commandHandlers.emoji = function(message, args) {
+	let messageContent = args.trim();
+	let matchingEmoji  = message.client.emojis.find(emoji => emoji.name == messageContent);
+
+	if (matchingEmoji) {
+		let emojiTemplate = "<#animated#:#name#:#id#>";
+		emojiTemplate = emojiTemplate.replace("#animated#", matchingEmoji.animated ? "a" : "");
+		emojiTemplate = emojiTemplate.replace("#name#", matchingEmoji.name);
+		emojiTemplate = emojiTemplate.replace("#id#", matchingEmoji.id);
+		console.log("Emoji: ", emojiTemplate);
+
+		message.channel.send(emojiTemplate);
+	} else {
+		console.log("Emoji: ", messageContent, "not found");
+		message.channel.send("I don't know this emoji. If this is a server emoji, consider adding me to the server it came from! <3");
+		return;
+	}
 }
 
 //** Functions for unicode command
