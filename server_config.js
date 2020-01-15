@@ -22,7 +22,7 @@ functions.initialiseServerConfig = function(guild) {
 				if (parsedFile.lastKnownName !== guild.name) {
 					console.log("Updated last known name for server id " + guild.id);
 					parsedFile.lastKnownName = guild.name;
-					configCache[guildID] = parsedFile;
+					configCache[guild.id] = parsedFile;
 					fs.writeFile("./server_config/" + guild.id + ".json", JSON.stringify(parsedFile), function (err) {
 						if (err)
 							reject(err);
