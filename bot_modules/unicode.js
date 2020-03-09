@@ -93,7 +93,7 @@ commandHandlers.clap = function(message, args) {
 	messageContent = messageContent.replace(/@/g, "@\u200B");
 
 	// replace all spaces with claps
-	messageContent = messageContent.replace(/\s+/g, ":clap:");
+	messageContent = messageContent.replace(/\s+/g, " :clap: ");
 
 	message.channel.send(messageContent);
 }
