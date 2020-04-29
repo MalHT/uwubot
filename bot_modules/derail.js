@@ -2,7 +2,7 @@
  * DERAIL - In case of excessively intense conversation, posts a random Neil Cicierega song
  */
 
-let serverConfig = require("../server_config.js");
+let serverConfig = require("../serverConfig.js");
 
 let helpStrings = [
 	"**Derail**",

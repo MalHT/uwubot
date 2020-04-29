@@ -3,7 +3,6 @@
  */
 
 const Flickr = require("flickrapi");
-const serverConfig = require("../server_config.js");
 
 let helpStrings = [
 	"**Animals**",
@@ -86,30 +85,24 @@ commandHandlers.goose = function(message, args) {
 };
 
 function flickrHandler(term, message, group = false) {
-	serverConfig.getServerConfig(message.guild.id).then(function(config) {
-		if (!("animals" in config.moduleConfig)) {
-			console.error("Malfunction in animals module: No Flickr config found.");
-			return; // this doesn't actually return from the function, just from this .then()
-		}
-
-		let flickrOptions = {
-			api_key: config.moduleConfig.animals.flickrApikey,
-			secret: config.moduleConfig.animals.flickrSecretkey
-		};
-
-		if (group) {
-			var result = flickrRandomPhotoByGroup(term, flickrOptions);
-		} else {
-			var result = flickrRandomPhotoBySearch(term, flickrOptions);
-		}
-
-		result.then(function(picture) {
-			message.channel.send(picture);
-		});
-	})
-	.catch(function(error) {
-		console.error(error);
+	if (!process.env.FLICKR_API || !process.env.FLICKR_SECRET) {
+		console.error("Malfunction in animals module: No Flickr config found.");
 		return;
+	}
+
+	let flickrOptions = {
+		api_key: process.env.FLICKR_API,
+		secret: process.env.FLICKR_SECRET
+	};
+
+	if (group) {
+		var result = flickrRandomPhotoByGroup(term, flickrOptions);
+	} else {
+		var result = flickrRandomPhotoBySearch(term, flickrOptions);
+	}
+
+	result.then(function(picture) {
+		message.channel.send(picture);
 	});
 };
 

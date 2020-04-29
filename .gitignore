@@ -65,3 +65,6 @@ bot_modules/imagetext/tmp
 
 # flickr garbage
 data/
+
+# env file
+.env

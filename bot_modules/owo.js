@@ -2,8 +2,7 @@
  * OWO - H-hewwo???
  */
 
-let botConfig = require("../config.json");
-let serverConfig = require("../server_config.js");
+let serverConfig = require("../serverConfig.js");
 
 let helpStrings = [
 	"**OwO**",

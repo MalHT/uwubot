@@ -2,14 +2,13 @@
  * COPYPASTA - Sends only the best and most rational copypastas
  */
 
-let botConfig = require("../config.json");
-let serverConfig = require("../server_config.js");
+let serverConfig = require("../serverConfig.js");
 
 let helpStrings = [
-	"**Copypastas**",
-	"  *Sends only the best and most rational copypastas*",
+	"**Copypasta**",
+	"  *Sends only the best and most rational copypasta*",
 	"  Usage:",
-	"    `!pasta` - Shows available pastas",
+	"    `!pasta` - Shows available pasta",
 	"    `!pasta <pastaname>` - Posts delicious pasta"
 ];
 let help = helpStrings.join("\n");
@@ -21,7 +20,7 @@ commandHandlers.pasta = function(message, args) {
 	serverConfig.getServerConfig(message.guild.id).then(function(config) {
 		if (args === "") {
 			message.channel.send("Usage: !pasta <pasta>");
-			let pastaMessage = ["Available Pastas:", "```"];
+			let pastaMessage = ["Available Pasta:", "```"];
 			Object.keys(config.moduleConfig.copypasta).forEach(function(element, index) {
 				pastaMessage.push("* " + element);
 			});
@@ -39,8 +38,8 @@ commandHandlers.pasta = function(message, args) {
 		};
 	})
 	.catch(function(error) {
-		message.channel.send("There aren't any copypastas configured for this server. Sorry :(");
-		console.error("Couldn't load any copypastas: " + error);
+		message.channel.send("There's no copypasta configured for this server. Sorry :(");
+		console.error("Couldn't load any copypasta: " + error);
 	});
 };
 
@@ -63,7 +62,7 @@ commandHandlers.listpastas = function(message, args) {
 
 			message.channel.send(pastaMessage + "```");
 		} else {
-			message.channel.send("There aren't any copypastas configured for this server. Sorry :(");
+		message.channel.send("There's no copypasta configured for this server. Sorry :(");
 		}
 	});
 };

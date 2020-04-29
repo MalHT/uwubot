@@ -3,8 +3,10 @@ const client = new Discord.Client();
 const path = require("path");
 const fs = require("fs");
 
-const { version } = require("./package.json");
-const serverConfig = require("./server_config.js");
+const dotenvResult = require('dotenv').config()
+
+const {version} = require("./package.json");
+const serverConfig = require("./serverConfig.js");
 
 // Setup
 require("console-stamp")(console, "[dd.mm.yy HH:MM:ss.l]");
@@ -19,6 +21,10 @@ require("console-stamp")(console, "[dd.mm.yy HH:MM:ss.l]");
  * Use External Emojis
  * Add Reactions
  */
+
+ if (dotenvResult.error) {
+ 	throw dotenvResult.error;
+ }
 
 var banner = String.raw `
   __  __       __  ____        __
@@ -151,7 +157,7 @@ client.on("message", async message => {
 				// Allow !uwuhelp usage outside of servers
 				message.channel.send(help);
 			} else if (commandText === "uwuinfo" && botConfig.superUsers.includes(message.author.id) && message.guild === null) {
-				// Allow me to see what servers uwubot has been added to
+				// Allow superusers to see what servers uwubot has been added to
 				message.author.send("**Joined Servers:**");
 				botStats().forEach(function (stat) {
 					message.author.send(stat);
@@ -182,4 +188,4 @@ client.on("error", async error => {
 });
 
 console.log("Logging in…");
-client.login(botConfig.apiKey);
+client.login(process.env.API_KEY);

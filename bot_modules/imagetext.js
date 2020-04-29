@@ -3,7 +3,7 @@
  */
 
 const Discord = require("discord.js");
-const serverConfig = require("../server_config.js");
+const serverConfig = require("../serverConfig.js");
 const fs = require("fs");
 const spawn = require("cross-spawn");
 const tmp = require("tmp");
@@ -25,6 +25,11 @@ let commandHandlers = {};
 commandHandlers.im = function(message, args) {
 	serverConfig.getServerConfig(message.guild.id).then(function(config) {
 		let images = config.moduleConfig.imagetext;
+		if (typeof images == "undefined") {
+			message.channel.send("Error: The imagetext module has not been configured.");
+			console.error("The imagetext module has not been configured.");
+			return;
+		}
 
 		// Print image name list if we didn't get one
 		if (args === "") {
@@ -37,24 +42,27 @@ commandHandlers.im = function(message, args) {
 		let command = words.splice(0,1)[0].toLowerCase(); // Remove the first word.
 		let messageText = words.join(" ");
 
-		// use 200 as a reasonable default for maximum message length
+		// Set a reasonable maximum message length
 		if (messageText.length > 240) {
-			message.channel.send("That message is too long.");
+			message.channel.send("Error: That message is too long.");
 			return;
 		}
 
 		// Complain if we didn't get a valid image name
 		if (!(command in images)) {
-			message.channel.send("Couldn't find that image.");
+			message.channel.send("Error: Couldn't find that image.");
 			return;
 		}
 
 		let imgMeta = images[command];
-		sendImage(messageText, imgMeta, message.channel);
+		if(!sendImage(messageText, imgMeta, message.channel)) {
+			message.channel.send("Error: Image generation failed.");
+			return;
+		}
 	})
 	.catch(function(error) {
-		message.channel.send("The config file for this server is broken!");
-		console.error("The config file for this server is broken!");
+		message.channel.send("An error occurred.");
+		console.error("An error occurred in the imagetext module:");
 		console.error(error);
 	});
 };

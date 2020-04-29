@@ -2,7 +2,7 @@
  * RATIONAL - Generates Rational Skeptic YouTube names
  */
 
-const serverConfig = require("../server_config.js");
+const serverConfig = require("../serverConfig.js");
 
 let helpStrings = [
 	"**Rational**",
