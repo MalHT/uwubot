@@ -4,26 +4,7 @@
 
 const Flickr = require("flickrapi");
 
-let helpStrings = [
-	"**Animals**",
-	"  *Gets important pictures of important animals*",
-	"  Usage:",
-	"    `!shoob`",
-	"    `!pangolin`",
-	"    `!corgi`",
-	"    `!duck`",
-	"    `!goose`",
-	"    `!seal`",
-	"    `!opossum`",
-	"    `!bun`",
-	"    `!capy`",
-	"    `!axolotl`",
-	"    `!fennec`",
-	"    `!tardi`",
-	"    `!shibe`",
-	"    `!cat`"
-];
-let help = helpStrings.join("\n");
+// helpStrings and help are defined at the bottom of this file
 
 //** Command handlers
 let commandHandlers = {};
@@ -67,6 +48,10 @@ commandHandlers.cat = function(message, args) {
 commandHandlers.shibe = function(message, args) {
 	flickrHandler("shiba inu+dog", message);
 };
+
+commandHandlers.hedgehog = function(message, args) {
+	flickrHandler("hedgehog cute", message);
+}
 
 commandHandlers.duck = function(message, args) {
 	flickrHandler("16694458@N00", message, true);
@@ -159,6 +144,18 @@ function randomProperty(obj) {
 };
 
 //** Module Exports
+
+let helpStrings = [
+	"**Animals**",
+	"  *Gets important pictures of important animals*",
+	"  Usage:",
+];
+
+for (const cmd of Object.keys(commandHandlers).sort()) {
+	helpStrings.push(`    \`!${cmd}\``)
+}
+
+let help = helpStrings.join("\n");
 
 module.exports = {
 	"help": help,

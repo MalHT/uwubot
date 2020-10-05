@@ -1,6 +1,6 @@
 {
   "name": "uwubot",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A meme bot for spenglers",
   "main": "bot.js",
   "dependencies": {
@@ -20,12 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MalHT/uwubot.git"
+    "url": "git+https://github.com/SamusAranX/uwubot.git"
   },
-  "author": "Maren",
+  "author": "Peter Wunder",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MalHT/uwubot/issues"
+    "url": "https://github.com/SamusAranX/uwubot/issues"
   },
-  "homepage": "https://github.com/MalHT/uwubot#readme"
+  "homepage": "https://github.com/SamusAranX/uwubot#readme"
 }
