@@ -59,6 +59,7 @@ data
 # Hide non-free fonts
 Helvetica*.ttf
 SF-*.otf
+Interstate*.otf
 
 # Hide temp dir
 bot_modules/imagetext/tmp

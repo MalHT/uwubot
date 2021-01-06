@@ -96,7 +96,12 @@ function sendImage(text, imgMeta, channel) {
 
 	try {
 		let imCmd = "convert";
-		let imArgs = [template, "-background", background, "-fill", fill, "-font", font, "-pointsize", pointSize, "-gravity", align, "-size", size, `caption:${text}`, "-geometry", offset, "-gravity", "northwest", "-composite", tempFile.name]
+
+		if (pointSize === undefined) {
+			var imArgs = [template, "-background", background, "-fill", fill, "-font", font, "-gravity", align, "-size", size, `caption:${text}`, "-geometry", offset, "-gravity", "northwest", "-composite", tempFile.name]
+		} else {
+			var imArgs = [template, "-background", background, "-fill", fill, "-font", font, "-pointsize", pointSize, "-gravity", align, "-size", size, `caption:${text}`, "-geometry", offset, "-gravity", "northwest", "-composite", tempFile.name]
+		}
 
 		// if this is the dril or pa template, use different imagemagick arguments
 		if (imgMeta.template === "dril") {

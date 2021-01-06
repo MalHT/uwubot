@@ -132,6 +132,24 @@
 			"align": "southwest",
 			"bgColor": "transparent",
 			"fgColor": "white"
+		},
+		"feet": {
+			"template": "feetsign.png",
+			"font": "Interstate Bold.otf",
+			"size": "928x270",
+			"offset": "+48+410",
+			"align": "center",
+			"bgColor": "transparent",
+			"fgColor": "#EBEBEB"
+		},
+		"vore": {
+			"template": "voresign.png",
+			"font": "Interstate Bold.otf",
+			"size": "928x270",
+			"offset": "+48+410",
+			"align": "center",
+			"bgColor": "transparent",
+			"fgColor": "#EBEBEB"
 		}
 	},
 	"copypasta": {
