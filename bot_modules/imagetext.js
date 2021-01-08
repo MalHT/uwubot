@@ -31,10 +31,10 @@ commandHandlers.im = function(message, args) {
 			return;
 		}
 
-		// Print image name list if we didn't get one
+		// Print template name list if we didn't get one
 		if (args === "") {
-			message.channel.send("Usage: `!im <image> <text>`");
-			message.channel.send("Available images: `" + Object.keys(images).join(", ") + "`");
+			message.channel.send("Usage: `!im <template> <text>`");
+			message.channel.send("Available templates: `" + Object.keys(images).join(", ") + "`");
 			return;
 		}
 
@@ -48,9 +48,10 @@ commandHandlers.im = function(message, args) {
 			return;
 		}
 
-		// Complain if we didn't get a valid image name
+		// Complain if we didn't get a valid template name
 		if (!(command in images)) {
-			message.channel.send("Error: Couldn't find that image.");
+			message.channel.send("Error: Couldn't find that template.");
+			message.channel.send("Available template: `" + Object.keys(images).join(", ") + "`");
 			return;
 		}
 
