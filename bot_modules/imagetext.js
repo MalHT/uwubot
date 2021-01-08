@@ -51,7 +51,7 @@ commandHandlers.im = function(message, args) {
 		// Complain if we didn't get a valid template name
 		if (!(command in images)) {
 			message.channel.send("Error: Couldn't find that template.");
-			message.channel.send("Available template: `" + Object.keys(images).join(", ") + "`");
+			message.channel.send("Available templates: `" + Object.keys(images).join(", ") + "`");
 			return;
 		}
 
