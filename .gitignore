@@ -52,3 +52,20 @@ config.json
 # Hide other configs and data created by modules
 server_config
 data
+
+# Hide macOS-specific garbage files
+.DS_Store
+
+# Hide non-free fonts
+Helvetica*.ttf
+SF-*.otf
+Interstate*.otf
+
+# Hide temp dir
+bot_modules/imagetext/tmp
+
+# flickr garbage
+data/
+
+# env file
+.env
